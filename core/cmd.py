@@ -254,6 +254,36 @@ class CMD:
             type=str,
             help="Query to send weatherapi, e.g. city name. Displays a gif representing current weather. \nThis arg requires you to also pass '--process-gif' with your pixel size, and the '--weather-api-key' with your 'https://weatherapi.com/' API key.",
         )
+        # Google Calendar integration
+        parser.add_argument(
+            "--calendar-current",
+            action="store_true",
+            help="Display current meeting from Google Calendar on the device",
+        )
+        parser.add_argument(
+            "--calendar-next",
+            action="store_true",
+            help="Display next upcoming meeting from Google Calendar on the device",
+        )
+        parser.add_argument(
+            "--calendar-today",
+            action="store_true",
+            help="Display today's meeting count from Google Calendar on the device",
+        )
+        parser.add_argument(
+            "--calendar-credentials",
+            action="store",
+            type=str,
+            help="Path to Google Calendar API credentials file (default: credentials.json)",
+            default="credentials.json",
+        )
+        parser.add_argument(
+            "--calendar-token",
+            action="store",
+            type=str,
+            help="Path to Google Calendar API token file (default: token.json)",
+            default="token.json",
+        )
 
     async def run(self, args):
         self.logging.info("initializing command line")
@@ -314,6 +344,12 @@ class CMD:
             await self.weather_image_query(args)
         elif args.weather_gif_query:
             await self.weather_gif_query(args)
+        elif args.calendar_current:
+            await self.calendar_current(args)
+        elif args.calendar_next:
+            await self.calendar_next(args)
+        elif args.calendar_today:
+            await self.calendar_today(args)
 
     async def test(self):
         """Tests all available options for the device"""
@@ -644,3 +680,109 @@ class CMD:
 
         setattr(args, 'set_gif', gif_path)
         await self.gif(args)
+
+    async def calendar_current(self, args):
+        """Display current meeting from Google Calendar"""
+        self.logging.info("displaying current meeting from Google Calendar")
+        try:
+            from calendar_integration import GoogleCalendarIntegration
+            
+            calendar = GoogleCalendarIntegration(
+                credentials_file=args.calendar_credentials,
+                token_file=args.calendar_token
+            )
+            
+            current_meeting = calendar.get_current_meeting()
+            if current_meeting:
+                display_text = calendar.format_meeting_for_display(current_meeting)
+                self.logging.info(f"Current meeting: {display_text}")
+                
+                # Set up text arguments for display
+                setattr(args, 'set_text', display_text)
+                setattr(args, 'text_mode', 1)  # Marquee mode
+                setattr(args, 'text_speed', 50)  # Slower speed for readability
+                setattr(args, 'text_color', '0-255-0')  # Green color
+                setattr(args, 'text_size', 16)
+                
+                await self.text(args)
+            else:
+                self.logging.info("No current meeting found")
+                # Display "Free" message
+                setattr(args, 'set_text', "Free")
+                setattr(args, 'text_mode', 0)  # Static text
+                setattr(args, 'text_color', '0-255-0')  # Green color
+                setattr(args, 'text_size', 16)
+                await self.text(args)
+                
+        except ImportError:
+            self.logging.error("Google Calendar integration not available. Install required dependencies.")
+        except Exception as e:
+            self.logging.error(f"Failed to get current meeting: {e}")
+
+    async def calendar_next(self, args):
+        """Display next meeting from Google Calendar"""
+        self.logging.info("displaying next meeting from Google Calendar")
+        try:
+            from calendar_integration import GoogleCalendarIntegration
+            
+            calendar = GoogleCalendarIntegration(
+                credentials_file=args.calendar_credentials,
+                token_file=args.calendar_token
+            )
+            
+            next_meeting = calendar.get_next_meeting()
+            if next_meeting:
+                display_text = calendar.format_meeting_for_display(next_meeting)
+                self.logging.info(f"Next meeting: {display_text}")
+                
+                # Set up text arguments for display
+                setattr(args, 'set_text', display_text)
+                setattr(args, 'text_mode', 1)  # Marquee mode
+                setattr(args, 'text_speed', 50)  # Slower speed for readability
+                setattr(args, 'text_color', '255-165-0')  # Orange color
+                setattr(args, 'text_size', 16)
+                
+                await self.text(args)
+            else:
+                self.logging.info("No upcoming meetings found")
+                # Display "No meetings" message
+                setattr(args, 'set_text', "No meetings")
+                setattr(args, 'text_mode', 0)  # Static text
+                setattr(args, 'text_color', '255-165-0')  # Orange color
+                setattr(args, 'text_size', 16)
+                await self.text(args)
+                
+        except ImportError:
+            self.logging.error("Google Calendar integration not available. Install required dependencies.")
+        except Exception as e:
+            self.logging.error(f"Failed to get next meeting: {e}")
+
+    async def calendar_today(self, args):
+        """Display today's meeting count from Google Calendar"""
+        self.logging.info("displaying today's meeting count from Google Calendar")
+        try:
+            from calendar_integration import GoogleCalendarIntegration
+            
+            calendar = GoogleCalendarIntegration(
+                credentials_file=args.calendar_credentials,
+                token_file=args.calendar_token
+            )
+            
+            todays_meetings = calendar.get_todays_meetings()
+            meeting_count = len(todays_meetings)
+            
+            display_text = f"Today: {meeting_count} meetings"
+            self.logging.info(display_text)
+            
+            # Set up text arguments for display
+            setattr(args, 'set_text', display_text)
+            setattr(args, 'text_mode', 0)  # Static text
+            setattr(args, 'text_color', '0-0-255')  # Blue color
+            setattr(args, 'text_size', 16)
+            
+            await self.text(args)
+                
+        except ImportError:
+            self.logging.error("Google Calendar integration not available. Install required dependencies.")
+        except Exception as e:
+            self.logging.error(f"Failed to get today's meetings: {e}")
