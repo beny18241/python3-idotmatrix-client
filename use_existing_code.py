@@ -18,7 +18,7 @@ def use_existing_code():
     token_file = 'token.json'
     
     # The authorization code from your URL
-    auth_code = "4/0AVGzR1DF1LOny83GMEaFi5RAlsNlC0n5B24TAsLVvvNEHg3KjqhUJkxDzc0ZGGjpWOFnLQ"
+    auth_code = "4/0AVGzR1AVtoANT9oG-cOvB5BTf9loiNshFH9SIyFrr4_4_XcwImE7xiQ1CqBqfX_dDM-HRQ"
     
     print("🔐 Using existing authorization code...")
     print("=" * 50)
