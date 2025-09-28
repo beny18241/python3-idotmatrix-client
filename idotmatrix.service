@@ -1,0 +1,22 @@
+[Unit]
+Description=iDotMatrix Display Controller
+After=network.target bluetooth.service
+Wants=bluetooth.service
+
+[Service]
+Type=simple
+User=idotmatrix
+Group=idotmatrix
+WorkingDirectory=/opt/idotmatrix
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/idotmatrix/venv/bin/python /opt/idotmatrix/app.py --address auto
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Bluetooth permissions
+SupplementaryGroups=bluetooth
+
+[Install]
+WantedBy=multi-user.target

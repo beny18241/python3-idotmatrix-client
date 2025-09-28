@@ -1,0 +1,11 @@
+asyncio
+idotmatrix==0.0.9
+bleak
+pillow
+argparse
+requests
+numpy
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+pyqt5

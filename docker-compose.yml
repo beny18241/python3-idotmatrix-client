@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  idotmatrix:
+    build: .
+    container_name: idotmatrix-app
+    privileged: true  # Required for Bluetooth access
+    network_mode: host  # Required for Bluetooth communication
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    command: ["python", "app.py", "--scan"]
+    
+  # Optional: Add a web interface service
+  idotmatrix-web:
+    build: .
+    container_name: idotmatrix-web
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    command: ["python", "gui.py"]
+    depends_on:
+      - idotmatrix
