@@ -178,28 +178,34 @@ def display_status_on_device(status, events):
         from config import DEVICE_ADDRESS
         
         if status == "free":
-            # Green text for free - show more details
-            display_text = "🟢 AVAILABLE - No meetings"
-            text_size = 10
+            # Green text for free - compact format
+            display_text = "🟢 FREE"
+            text_size = 12
             text_color = "0-255-0"  # Bright Green
         elif status == "busy":
-            # Red text for busy - show meeting details
+            # Red text for busy - show meeting details in compact format
             # Clean up the events text
             clean_events = events.replace("ICS:", "").replace("Google:", "").replace("Service:", "").strip()
             if "No events found" in clean_events:
-                display_text = "🔴 BUSY - In meeting"
+                display_text = "🔴 BUSY"
             else:
-                # Truncate if too long but keep more text
-                if len(clean_events) > 40:
-                    display_text = f"🔴 BUSY - {clean_events[:40]}..."
+                # More aggressive truncation but keep key info
+                if len(clean_events) > 25:
+                    # Try to keep the most important part (meeting name)
+                    meeting_parts = clean_events.split(' @ ')
+                    if len(meeting_parts) > 0:
+                        meeting_name = meeting_parts[0][:20]  # First 20 chars of meeting name
+                        display_text = f"🔴 {meeting_name}"
+                    else:
+                        display_text = f"🔴 {clean_events[:25]}"
                 else:
-                    display_text = f"🔴 BUSY - {clean_events}"
-            text_size = 8
+                    display_text = f"🔴 {clean_events}"
+            text_size = 10
             text_color = "255-0-0"  # Bright Red
         else:
-            # Error status - orange/yellow
-            display_text = "⚠️ ERROR - Check connection"
-            text_size = 10
+            # Error status - compact
+            display_text = "⚠️ ERROR"
+            text_size = 12
             text_color = "255-165-0"  # Orange
         
         logger.info(f"Displaying on device: {display_text} (size: {text_size}, color: {text_color})")
