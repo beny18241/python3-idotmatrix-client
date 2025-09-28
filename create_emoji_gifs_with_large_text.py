@@ -60,39 +60,49 @@ def create_free_emoji_gif_with_large_text():
                     draw.line([check_x2, check_y2, end_x, end_y], 
                              fill=(255, 255, 255), width=2)
         
-        # Add large "FREE" text overlay - more prominent
-        if progress > 0.4:  # Text appears earlier
-            text_progress = min(1.0, (progress - 0.4) / 0.6)
+        # Add extra large "FREE" text overlay - very prominent
+        if progress > 0.3:  # Text appears earlier
+            text_progress = min(1.0, (progress - 0.3) / 0.7)
             
-            # Draw large pixelated "FREE" text
-            text = "FREE"
-            
-            # Use pixel-based text drawing for better visibility
-            if text_progress > 0.3:
-                # Draw "FREE" in large pixels
-                # F
-                for y in range(2, 8):
-                    for x in range(2, 4):
-                        if x == 2 or (y == 2) or (y == 5):
-                            draw.point((x, y), fill=(0, 255, 0))
+            # Draw extra large pixelated "FREE" text (3x3 pixels per letter)
+            if text_progress > 0.2:
+                # Draw "FREE" in extra large pixels (3x3 blocks)
+                # F - 3x3 block
+                for y in range(1, 7):
+                    for x in range(1, 4):
+                        if x == 1 or (y == 1) or (y == 4):
+                            # Draw 3x3 block for each pixel
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(0, 255, 0))
                 
-                # R  
-                for y in range(2, 8):
-                    for x in range(5, 7):
-                        if x == 5 or (y == 2) or (y == 5) or (x == 6 and y > 5):
-                            draw.point((x, y), fill=(0, 255, 0))
+                # R - 3x3 block
+                for y in range(1, 7):
+                    for x in range(5, 8):
+                        if x == 5 or (y == 1) or (y == 4) or (x == 7 and y > 4):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(0, 255, 0))
                 
-                # E
-                for y in range(2, 8):
-                    for x in range(8, 10):
-                        if x == 8 or (y == 2) or (y == 5) or (y == 7):
-                            draw.point((x, y), fill=(0, 255, 0))
+                # E - 3x3 block
+                for y in range(1, 7):
+                    for x in range(9, 12):
+                        if x == 9 or (y == 1) or (y == 4) or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(0, 255, 0))
                 
-                # E
-                for y in range(2, 8):
-                    for x in range(11, 13):
-                        if x == 11 or (y == 2) or (y == 5) or (y == 7):
-                            draw.point((x, y), fill=(0, 255, 0))
+                # E - 3x3 block
+                for y in range(1, 7):
+                    for x in range(13, 16):
+                        if x == 13 or (y == 1) or (y == 4) or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(0, 255, 0))
         
         frames.append(img)
     
@@ -148,36 +158,48 @@ def create_busy_emoji_gif_with_large_text():
                              center_x + x_size, center_y - x_size], 
                              fill=(255, 255, 255), width=2)
         
-        # Add large "CALL" text overlay - more prominent
-        if progress > 0.4:  # Text appears earlier
-            text_progress = min(1.0, (progress - 0.4) / 0.6)
+        # Add extra large "CALL" text overlay - very prominent
+        if progress > 0.3:  # Text appears earlier
+            text_progress = min(1.0, (progress - 0.3) / 0.7)
             
-            # Draw large pixelated "CALL" text
-            if text_progress > 0.3:
-                # Draw "CALL" in large pixels
-                # C
-                for y in range(2, 8):
-                    for x in range(2, 4):
-                        if x == 2 or (y == 2) or (y == 7):
-                            draw.point((x, y), fill=(255, 0, 0))
+            # Draw extra large pixelated "CALL" text (3x3 pixels per letter)
+            if text_progress > 0.2:
+                # Draw "CALL" in extra large pixels (3x3 blocks)
+                # C - 3x3 block
+                for y in range(1, 7):
+                    for x in range(1, 4):
+                        if x == 1 or (y == 1) or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 0, 0))
                 
-                # A
-                for y in range(2, 8):
-                    for x in range(5, 7):
-                        if x == 5 or (y == 2) or (y == 5) or (x == 6 and y < 5):
-                            draw.point((x, y), fill=(255, 0, 0))
+                # A - 3x3 block
+                for y in range(1, 7):
+                    for x in range(5, 8):
+                        if x == 5 or (y == 1) or (y == 4) or (x == 7 and y < 4):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 0, 0))
                 
-                # L
-                for y in range(2, 8):
-                    for x in range(8, 10):
-                        if x == 8 or (y == 7):
-                            draw.point((x, y), fill=(255, 0, 0))
+                # L - 3x3 block
+                for y in range(1, 7):
+                    for x in range(9, 12):
+                        if x == 9 or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 0, 0))
                 
-                # L
-                for y in range(2, 8):
-                    for x in range(11, 13):
-                        if x == 11 or (y == 7):
-                            draw.point((x, y), fill=(255, 0, 0))
+                # L - 3x3 block
+                for y in range(1, 7):
+                    for x in range(13, 16):
+                        if x == 13 or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 0, 0))
         
         frames.append(img)
     
@@ -244,42 +266,57 @@ def create_error_emoji_gif_with_large_text():
                                 exclamation_x + 1, exclamation_y + 3], 
                                fill=(255, 255, 255))
         
-        # Add large "ERROR" text overlay - more prominent
-        if progress > 0.4:  # Text appears earlier
-            text_progress = min(1.0, (progress - 0.4) / 0.6)
+        # Add extra large "ERROR" text overlay - very prominent
+        if progress > 0.3:  # Text appears earlier
+            text_progress = min(1.0, (progress - 0.3) / 0.7)
             
-            # Draw large pixelated "ERROR" text
-            if text_progress > 0.3:
-                # Draw "ERROR" in large pixels
-                # E
-                for y in range(2, 8):
-                    for x in range(2, 4):
-                        if x == 2 or (y == 2) or (y == 5) or (y == 7):
-                            draw.point((x, y), fill=(255, 165, 0))
+            # Draw extra large pixelated "ERROR" text (3x3 pixels per letter)
+            if text_progress > 0.2:
+                # Draw "ERROR" in extra large pixels (3x3 blocks)
+                # E - 3x3 block
+                for y in range(1, 7):
+                    for x in range(1, 4):
+                        if x == 1 or (y == 1) or (y == 4) or (y == 6):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
                 
-                # R
-                for y in range(2, 8):
-                    for x in range(5, 7):
-                        if x == 5 or (y == 2) or (y == 5) or (x == 6 and y > 5):
-                            draw.point((x, y), fill=(255, 165, 0))
+                # R - 3x3 block
+                for y in range(1, 7):
+                    for x in range(5, 8):
+                        if x == 5 or (y == 1) or (y == 4) or (x == 7 and y > 4):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
                 
-                # R
-                for y in range(2, 8):
-                    for x in range(8, 10):
-                        if x == 8 or (y == 2) or (y == 5) or (x == 9 and y > 5):
-                            draw.point((x, y), fill=(255, 165, 0))
+                # R - 3x3 block
+                for y in range(1, 7):
+                    for x in range(9, 12):
+                        if x == 9 or (y == 1) or (y == 4) or (x == 11 and y > 4):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
                 
-                # O
-                for y in range(2, 8):
-                    for x in range(11, 13):
-                        if (x == 11 and y > 2 and y < 7) or (x == 12 and y > 2 and y < 7) or (y == 2 and x > 11 and x < 13) or (y == 7 and x > 11 and x < 13):
-                            draw.point((x, y), fill=(255, 165, 0))
+                # O - 3x3 block
+                for y in range(1, 7):
+                    for x in range(13, 16):
+                        if (x == 13 and y > 1 and y < 6) or (x == 15 and y > 1 and y < 6) or (y == 1 and x > 13 and x < 16) or (y == 6 and x > 13 and x < 16):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
                 
-                # R
-                for y in range(2, 8):
-                    for x in range(14, 16):
-                        if x == 14 or (y == 2) or (y == 5) or (x == 15 and y > 5):
-                            draw.point((x, y), fill=(255, 165, 0))
+                # R - 3x3 block
+                for y in range(1, 7):
+                    for x in range(17, 20):
+                        if x == 17 or (y == 1) or (y == 4) or (x == 19 and y > 4):
+                            for dy in range(3):
+                                for dx in range(3):
+                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
+                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
         
         frames.append(img)
     
