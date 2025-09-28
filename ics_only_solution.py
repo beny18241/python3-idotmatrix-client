@@ -16,8 +16,9 @@ def get_ics_events_only(meeting_type="tomorrow"):
     print("=" * 60)
     
     try:
-        # TODO: Replace with your ICS calendar URL
-        ics_url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
+        # Load configuration
+        from config import ICS_CALENDAR_URL, DEVICE_ADDRESS
+        ics_url = ICS_CALENDAR_URL
         
         if meeting_type == "tomorrow":
             events = get_ics_events_for_tomorrow_simple(ics_url)
@@ -83,21 +84,36 @@ def main():
     """Main function"""
     
     if len(sys.argv) < 2:
-        print("Usage: python3 ics_only_solution.py <device_address> [meeting_type]")
-        print("  device_address: Bluetooth address of iDotMatrix device")
+        print("Usage: python3 ics_only_solution.py [device_address] [meeting_type]")
+        print("  device_address: Bluetooth address of iDotMatrix device (optional if in config.py)")
         print("  meeting_type: current, today, tomorrow (default: tomorrow)")
         print()
         print("Examples:")
         print("  python3 ics_only_solution.py DD:4F:93:46:DF:1A tomorrow")
-        print("  python3 ics_only_solution.py DD:4F:93:46:DF:1A current")
-        print("  python3 ics_only_solution.py DD:4F:93:46:DF:1A today")
+        print("  python3 ics_only_solution.py tomorrow  # Uses device from config.py")
+        print("  python3 ics_only_solution.py current  # Uses device from config.py")
         print()
         print("🔧 This solution uses:")
         print("   • ICS Calendar (direct access) - Working perfectly!")
+        print("   • Configuration from config.py")
         return
     
-    device_address = sys.argv[1]
-    meeting_type = sys.argv[2] if len(sys.argv) > 2 else "tomorrow"
+    # Parse arguments
+    if len(sys.argv) == 2:
+        # Only meeting type provided, use device from config
+        try:
+            from config import DEVICE_ADDRESS
+            device_address = DEVICE_ADDRESS
+            meeting_type = sys.argv[1]
+        except ImportError:
+            print("❌ Configuration file not found!")
+            print("   Please create config.py with your DEVICE_ADDRESS")
+            print("   Or use: python ics_only_solution.py <device_address> <meeting_type>")
+            return
+    else:
+        # Both device and meeting type provided
+        device_address = sys.argv[1]
+        meeting_type = sys.argv[2]
     
     # Display ICS events on device
     success = display_ics_events_on_device(device_address, meeting_type)

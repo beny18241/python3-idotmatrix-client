@@ -239,9 +239,15 @@ def main():
     
     meeting_type = sys.argv[1]
     
-    # ICS calendar URL
-    # TODO: Replace with your ICS calendar URL
-    ics_url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
+    # Load configuration
+    try:
+        from config import ICS_CALENDAR_URL
+        ics_url = ICS_CALENDAR_URL
+    except ImportError:
+        print("❌ Configuration file not found!")
+        print("   Please create config.py with your ICS_CALENDAR_URL")
+        print("   See calendar_config_template.py for reference")
+        return
     
     print(f"🔧 Getting {meeting_type} events from ICS calendar")
     print("=" * 60)

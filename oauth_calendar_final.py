@@ -196,8 +196,14 @@ def get_ics_calendar_events(meeting_type="tomorrow"):
     
     try:
         print("2️⃣ Checking ICS Calendar...")
-        # TODO: Replace with your ICS calendar URL
-        ics_url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
+        # Load configuration
+        try:
+            from config import ICS_CALENDAR_URL
+            ics_url = ICS_CALENDAR_URL
+        except ImportError:
+            print("❌ Configuration file not found!")
+            print("   Please create config.py with your ICS_CALENDAR_URL")
+            return "Configuration error"
         
         # Import here to avoid errors if not available
         from ics_calendar_simple import get_ics_events_for_tomorrow_simple, get_ics_events_for_current_simple, get_ics_events_for_today_simple

@@ -50,6 +50,12 @@ source venv/bin/activate && python3 copy_oauth_from_local.py
 ### ICS Calendar Only (No Authentication Required)
 ```bash
 # Works without Google authentication
+# Using config.py (recommended)
+python3 ics_only_solution.py tomorrow
+python3 ics_only_solution.py current
+python3 ics_only_solution.py today
+
+# Or specify device manually
 python3 ics_only_solution.py YOUR_DEVICE_ADDRESS tomorrow
 python3 ics_only_solution.py YOUR_DEVICE_ADDRESS current
 python3 ics_only_solution.py YOUR_DEVICE_ADDRESS today
@@ -76,9 +82,24 @@ source venv/bin/activate && python3 oauth_ssh_tunnel_alt.py
 ```
 
 ### 2. ICS Calendar Setup (Optional)
-Edit `ics_calendar_simple.py` to change the ICS URL to your calendar:
+
+#### Quick Setup
+```bash
+# Run the configuration setup
+python3 setup_config.py
+```
+
+#### Manual Configuration
+Edit `config.py` to set your settings:
 ```python
-ics_url = "https://outlook.office365.com/owa/calendar/.../calendar.ics"
+# Your ICS calendar URL
+ICS_CALENDAR_URL = "https://outlook.office365.com/owa/calendar/.../calendar.ics"
+
+# Your device address
+DEVICE_ADDRESS = "DD:4F:93:46:DF:1A"
+
+# Your timezone
+TIMEZONE = "Europe/Warsaw"
 ```
 
 ## 🔧 Calendar Troubleshooting
