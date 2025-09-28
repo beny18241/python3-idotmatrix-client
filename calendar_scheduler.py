@@ -175,7 +175,7 @@ def run_scheduler():
     
     print("🕐 Calendar Scheduler Started")
     print("=" * 50)
-    print("📅 Updates every 30 minutes")
+    print("📅 Updates every 30 minutes (at :00 and :30)")
     print("🟢 FREE = Available")
     print("🔴 BUSY = In meeting")
     print("⚠️ ERROR = Connection issue")
@@ -183,8 +183,9 @@ def run_scheduler():
     print("Press Ctrl+C to stop")
     print()
     
-    # Schedule updates every 30 minutes
-    schedule.every(30).minutes.do(update_calendar_status)
+    # Schedule updates every 30 minutes starting at full hours
+    schedule.every().hour.at(":00").do(update_calendar_status)  # Every hour at :00
+    schedule.every().hour.at(":30").do(update_calendar_status)  # Every hour at :30
     
     # Run initial update
     update_calendar_status()

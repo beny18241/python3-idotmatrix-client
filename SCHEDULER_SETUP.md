@@ -1,13 +1,13 @@
 # Calendar Scheduler Setup
 
-## 🕐 **Automatic Calendar Updates Every 30 Minutes**
+## 🕐 **Automatic Calendar Updates Every 30 Minutes (at :00 and :30)**
 
 ### **Features:**
 - ✅ **🟢 FREE** - Green icon when available
 - ✅ **🔴 BUSY** - Red icon with meeting title when occupied
 - ✅ **⚠️ ERROR** - Yellow warning for connection issues
 - ✅ **Smart Text Sizing** - Smaller text for meetings, larger for status
-- ✅ **Auto-refresh** - Updates every 30 minutes
+- ✅ **Auto-refresh** - Updates every 30 minutes (at :00 and :30)
 
 ## 🚀 **Quick Setup**
 
@@ -32,7 +32,7 @@ python3 calendar_status_display.py display
 
 ### **3. Run Scheduler**
 ```bash
-# Run continuously (every 30 minutes)
+# Run continuously (every 30 minutes at :00 and :30)
 python3 calendar_scheduler.py
 ```
 
@@ -60,8 +60,8 @@ sudo journalctl -u calendar-scheduler -f
 # Edit crontab
 crontab -e
 
-# Add this line (every 30 minutes)
-*/30 * * * * cd /opt/idotmatrix && python3 calendar_scheduler.py test
+# Add this line (every 30 minutes at :00 and :30)
+0,30 * * * * cd /opt/idotmatrix && python3 calendar_scheduler.py test
 ```
 
 ## 📊 **Status Display Options**
@@ -111,11 +111,17 @@ python3 calendar_status_simple.py update
 ## 🔧 **Configuration**
 
 ### **Update Frequency**
-Edit `calendar_scheduler.py` line 95:
+Edit `calendar_scheduler.py` to change timing:
 ```python
-# Change from 30 minutes to any interval
-schedule.every(15).minutes.do(update_calendar_status)  # Every 15 minutes
-schedule.every(1).hour.do(update_calendar_status)      # Every hour
+# Current: Every 30 minutes at :00 and :30
+schedule.every().hour.at(":00").do(update_calendar_status)
+schedule.every().hour.at(":30").do(update_calendar_status)
+
+# Alternative: Every 15 minutes
+schedule.every(15).minutes.do(update_calendar_status)
+
+# Alternative: Every hour only
+schedule.every().hour.at(":00").do(update_calendar_status)
 ```
 
 ### **Text Sizing**
@@ -182,7 +188,7 @@ sudo systemctl restart calendar-scheduler
 
 ## 📝 **Notes**
 
-- **Scheduler runs every 30 minutes** by default
+- **Scheduler runs every 30 minutes** (at :00 and :30) by default
 - **Status updates automatically** based on calendar events
 - **Icons and colors** indicate availability at a glance
 - **Meeting titles** are truncated to fit display
