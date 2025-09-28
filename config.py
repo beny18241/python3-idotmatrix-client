@@ -10,11 +10,12 @@ Edit this file to configure your calendar integration settings.
 # =============================================================================
 
 # Your ICS calendar URL (Outlook/Exchange calendar)
-ICS_CALENDAR_URL = "https://outlook.office365.com/owa/calendar/144d73fdf2654fb3b92983ee16e9d0b3@genpt.com/e829a99fc26b4c66a482420d04ea689513863417029725141930/calendar.ics"
+# Get this from your Outlook calendar settings
+ICS_CALENDAR_URL = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
 
 # Your iDotMatrix device Bluetooth address
 # Find this by running: ./run_in_venv.sh --scan
-DEVICE_ADDRESS = "DD:4F:93:46:DF:1A"  # Replace with your device address
+DEVICE_ADDRESS = "XX:XX:XX:XX:XX:XX"  # Replace with your device address
 
 # =============================================================================
 # DISPLAY SETTINGS

@@ -36,7 +36,7 @@ def create_config():
     # Get device address
     print("\n2️⃣ iDotMatrix Device Address")
     print("   Find this by running: ./run_in_venv.sh --scan")
-    device_address = input("   Device Address (e.g., DD:4F:93:46:DF:1A): ").strip()
+    device_address = input("   Device Address (e.g., XX:XX:XX:XX:XX:XX): ").strip()
     
     if not device_address:
         print("❌ Device address is required!")

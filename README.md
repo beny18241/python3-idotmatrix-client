@@ -38,13 +38,13 @@ source venv/bin/activate && python3 copy_oauth_from_local.py
 ### Combined Calendar Solution (Recommended)
 ```bash
 # Display tomorrow's events from both Google Calendar and ICS
-./run_oauth_calendar_venv.sh YOUR_DEVICE_ADDRESS tomorrow
+./run_oauth_calendar_venv.sh XX:XX:XX:XX:XX:XX tomorrow
 
 # Display current events
-./run_oauth_calendar_venv.sh YOUR_DEVICE_ADDRESS current
+./run_oauth_calendar_venv.sh XX:XX:XX:XX:XX:XX current
 
 # Display today's events
-./run_oauth_calendar_venv.sh YOUR_DEVICE_ADDRESS today
+./run_oauth_calendar_venv.sh XX:XX:XX:XX:XX:XX today
 ```
 
 ### ICS Calendar Only (No Authentication Required)
@@ -56,9 +56,9 @@ python3 ics_only_solution.py current
 python3 ics_only_solution.py today
 
 # Or specify device manually
-python3 ics_only_solution.py YOUR_DEVICE_ADDRESS tomorrow
-python3 ics_only_solution.py YOUR_DEVICE_ADDRESS current
-python3 ics_only_solution.py YOUR_DEVICE_ADDRESS today
+python3 ics_only_solution.py XX:XX:XX:XX:XX:XX tomorrow
+python3 ics_only_solution.py XX:XX:XX:XX:XX:XX current
+python3 ics_only_solution.py XX:XX:XX:XX:XX:XX today
 ```
 
 ### Google Calendar Only
@@ -96,7 +96,7 @@ Edit `config.py` to set your settings:
 ICS_CALENDAR_URL = "https://outlook.office365.com/owa/calendar/.../calendar.ics"
 
 # Your device address
-DEVICE_ADDRESS = "DD:4F:93:46:DF:1A"
+DEVICE_ADDRESS = "XX:XX:XX:XX:XX:XX"
 
 # Your timezone
 TIMEZONE = "Europe/Warsaw"
