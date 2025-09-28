@@ -33,26 +33,35 @@ def get_current_status():
         return "error", "Error"
 
 def display_status_on_device(status, events):
-    """Display status on iDotMatrix device"""
+    """Display status on iDotMatrix device with improved formatting"""
     
     try:
         from config import DEVICE_ADDRESS
         
         if status == "free":
-            # Green text for free (no emoji)
-            display_text = "FREE"
-            text_size = 8  # Smaller text
-            text_color = "0-255-0"  # Green
+            # Green text for free - show more details
+            display_text = "🟢 AVAILABLE - No meetings"
+            text_size = 10
+            text_color = "0-255-0"  # Bright Green
         elif status == "busy":
-            # Red text for busy (no emoji)
-            display_text = f"BUSY: {events[:30]}..." if len(events) > 30 else f"BUSY: {events}"
-            text_size = 6  # Even smaller text for meetings
-            text_color = "255-0-0"  # Red
-        else:
-            # Error status (no emoji)
-            display_text = "ERROR"
+            # Red text for busy - show meeting details
+            # Clean up the events text
+            clean_events = events.replace("ICS:", "").replace("Google:", "").replace("Service:", "").strip()
+            if "No events found" in clean_events:
+                display_text = "🔴 BUSY - In meeting"
+            else:
+                # Truncate if too long but keep more text
+                if len(clean_events) > 40:
+                    display_text = f"🔴 BUSY - {clean_events[:40]}..."
+                else:
+                    display_text = f"🔴 BUSY - {clean_events}"
             text_size = 8
-            text_color = "255-255-0"  # Yellow
+            text_color = "255-0-0"  # Bright Red
+        else:
+            # Error status - orange/yellow
+            display_text = "⚠️ ERROR - Check connection"
+            text_size = 10
+            text_color = "255-165-0"  # Orange
         
         # Use the run script to display text
         cmd = [
