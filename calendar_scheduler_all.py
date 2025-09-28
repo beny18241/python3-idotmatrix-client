@@ -177,16 +177,18 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs with meeting titles exist, create them if not
-        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
-            logger.info("Creating emoji GIFs with meeting titles...")
-            import create_emoji_gifs_with_meeting_titles
-            create_emoji_gifs_with_meeting_titles.main()
+        # Check if simple emoji GIFs exist, create if not
+        if not os.path.exists("images/free_emoji_simple.gif"):
+            logger.info("Creating simple emoji GIFs...")
+            import create_emoji_gifs_simple
+            create_emoji_gifs_simple.create_free_emoji_gif()
+            create_emoji_gifs_simple.create_busy_emoji_gif()
+            create_emoji_gifs_simple.create_error_emoji_gif()
         
         if status == "free":
-            # Animated green checkmark with large "FREE" text for free
-            gif_path = "images/free_emoji_with_meeting_title.gif"
-            logger.info(f"Displaying FREE animation with meeting title: {gif_path}")
+            # Simple animated green checkmark for free
+            gif_path = "images/free_emoji_simple.gif"
+            logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -196,10 +198,9 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Create GIF with meeting title
-            import create_emoji_gifs_with_meeting_titles
-            gif_path = create_emoji_gifs_with_meeting_titles.create_busy_emoji_gif_with_meeting_title(events)
-            logger.info(f"Displaying CALL animation with meeting title: {gif_path}")
+            # Simple animated red X for busy
+            gif_path = "images/busy_emoji_simple.gif"
+            logger.info(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -209,9 +210,9 @@ def display_status_on_device(status, events):
             ]
             
         else:
-            # Animated orange warning with large "ERROR" text for error
-            gif_path = "images/error_emoji_with_meeting_title.gif"
-            logger.info(f"Displaying ERROR animation with meeting title: {gif_path}")
+            # Simple animated orange warning for error
+            gif_path = "images/error_emoji_simple.gif"
+            logger.info(f"Displaying ERROR animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
