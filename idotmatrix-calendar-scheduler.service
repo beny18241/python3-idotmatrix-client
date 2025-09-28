@@ -1,0 +1,31 @@
+[Unit]
+Description=iDotMatrix Calendar Scheduler
+Documentation=https://github.com/beny18241/python3-idotmatrix-client
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=maciejpindela
+Group=staff
+WorkingDirectory=/Users/maciejpindela/Desktop/idotmatrix
+ExecStart=/Users/maciejpindela/Desktop/idotmatrix/venv/bin/python /Users/maciejpindela/Desktop/idotmatrix/calendar_scheduler_all.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=idotmatrix-calendar
+
+# Environment variables
+Environment=PATH=/Users/maciejpindela/Desktop/idotmatrix/venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONPATH=/Users/maciejpindela/Desktop/idotmatrix
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/Users/maciejpindela/Desktop/idotmatrix/logs
+
+[Install]
+WantedBy=multi-user.target
