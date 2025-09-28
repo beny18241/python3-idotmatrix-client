@@ -176,7 +176,7 @@ def get_ics_events_for_current_simple(ics_url):
     events = fetch_ics_calendar_simple(ics_url)
     
     if not events:
-        return "No events found in ICS calendar"
+        return "Free"
     
     # Get current time
     now = datetime.datetime.now()
