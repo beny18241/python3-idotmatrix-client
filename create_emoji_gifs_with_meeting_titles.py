@@ -177,7 +177,7 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
                 # A - 2x2 block
                 for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y < 2):
+                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y < 3):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
