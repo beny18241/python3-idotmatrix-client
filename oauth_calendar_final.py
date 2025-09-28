@@ -164,8 +164,8 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
             now_utc = now.isoformat() + 'Z'
             
             # Check a wider time range to catch ongoing events
-            time_range_start = (now - datetime.timedelta(hours=1)).isoformat() + 'Z'
-            time_range_end = (now + datetime.timedelta(hours=1)).isoformat() + 'Z'
+            time_range_start = (now - datetime.timedelta(minutes=30)).isoformat() + 'Z'
+            time_range_end = (now + datetime.timedelta(minutes=30)).isoformat() + 'Z'
             
             for calendar in calendars:
                 calendar_id = calendar.get('id', '')

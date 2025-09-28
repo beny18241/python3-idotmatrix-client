@@ -35,9 +35,9 @@ def get_current_meeting_service():
         now = datetime.datetime.utcnow()
         now_iso = now.isoformat() + 'Z'
         
-        # Check a wider time range to catch ongoing events
-        time_range_start = (now - datetime.timedelta(hours=1)).isoformat() + 'Z'
-        time_range_end = (now + datetime.timedelta(hours=1)).isoformat() + 'Z'
+        # Check a smaller time range to catch ongoing events
+        time_range_start = (now - datetime.timedelta(minutes=30)).isoformat() + 'Z'
+        time_range_end = (now + datetime.timedelta(minutes=30)).isoformat() + 'Z'
         
         events_result = service.events().list(
             calendarId='primary',
