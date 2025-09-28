@@ -177,17 +177,17 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if default emoji GIFs exist, create if not
-        if not os.path.exists("images/free_emoji.gif"):
-            logger.info("Creating default emoji GIFs...")
-            import create_emoji_gifs_default
-            create_emoji_gifs_default.create_free_emoji_gif()
-            create_emoji_gifs_default.create_busy_emoji_gif()
-            create_emoji_gifs_default.create_error_emoji_gif()
+        # Check if emoji GIFs with text exist, create if not
+        if not os.path.exists("images/free_emoji_with_text.gif"):
+            logger.info("Creating emoji GIFs with text...")
+            import create_emoji_gifs_with_text
+            create_emoji_gifs_with_text.create_free_emoji_gif()
+            create_emoji_gifs_with_text.create_busy_emoji_gif()
+            create_emoji_gifs_with_text.create_error_emoji_gif()
         
         if status == "free":
-            # Default animated green checkmark for free
-            gif_path = "images/free_emoji.gif"
+            # Animated green checkmark with text for free
+            gif_path = "images/free_emoji_with_text.gif"
             logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
@@ -198,8 +198,8 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Default animated red X for busy
-            gif_path = "images/busy_emoji.gif"
+            # Animated red X with text for busy
+            gif_path = "images/busy_emoji_with_text.gif"
             logger.info(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
