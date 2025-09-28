@@ -44,6 +44,9 @@ def get_current_meeting_service():
         
         events = events_result.get('items', [])
         
+        # Filter out all-day events
+        events = [event for event in events if not (event.get('start', {}).get('date') and not event.get('start', {}).get('dateTime'))]
+        
         if not events:
             return None
         
@@ -109,6 +112,9 @@ def get_next_meeting_service():
         ).execute()
         
         events = events_result.get('items', [])
+        
+        # Filter out all-day events
+        events = [event for event in events if not (event.get('start', {}).get('date') and not event.get('start', {}).get('dateTime'))]
         
         if not events:
             return None

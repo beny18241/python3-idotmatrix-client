@@ -65,6 +65,15 @@ def get_oauth_credentials():
     
     return creds
 
+def is_all_day_event(event):
+    """Check if an event is an all-day event"""
+    start_time = event.get('start', {})
+    return 'date' in start_time and 'dateTime' not in start_time
+
+def filter_events(events):
+    """Filter out all-day events from the events list"""
+    return [event for event in events if not is_all_day_event(event)]
+
 def get_oauth_calendar_events(meeting_type="tomorrow"):
     """Get events from Google Calendar using OAuth"""
     
@@ -85,7 +94,10 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
         calendar_list = service.calendarList().list().execute()
         calendars = calendar_list.get('items', [])
         
-        print(f"📅 Found {len(calendars)} accessible calendars")
+        # Filter out Todoist calendar
+        calendars = [cal for cal in calendars if 'todoist' not in cal.get('summary', '').lower()]
+        
+        print(f"📅 Found {len(calendars)} accessible calendars (Todoist excluded)")
         
         if not calendars:
             return "No calendars accessible"
@@ -114,6 +126,8 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                     ).execute()
                     
                     events = events_result.get('items', [])
+                    # Filter out all-day events
+                    events = filter_events(events)
                     if events:
                         for event in events:
                             event_summary = event.get('summary', 'No Title')
@@ -125,9 +139,9 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                                     dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
                                     time_str = dt.strftime('%H:%M')
                                 except:
-                                    time_str = "All day"
+                                    time_str = "Now"
                             elif 'date' in start_time:
-                                time_str = "All day"
+                                time_str = "Now"
                             
                             all_events.append(f"{event_summary} @ {time_str}")
                 
@@ -162,6 +176,8 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                     ).execute()
                     
                     events = events_result.get('items', [])
+                    # Filter out all-day events
+                    events = filter_events(events)
                     if events:
                         event = events[0]
                         event_summary = event.get('summary', 'No Title')

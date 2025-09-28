@@ -188,6 +188,10 @@ def get_ics_events_for_current_simple(ics_url):
         start_time = event['start']
         end_time = event['end']
         
+        # Skip all-day events (events with only date, no time)
+        if start_time and len(start_time) == 8 and start_time.isdigit():
+            continue  # Skip all-day events (format: YYYYMMDD)
+        
         if start_time and end_time:
             start_dt = parse_ics_datetime(start_time)
             end_dt = parse_ics_datetime(end_time)
