@@ -1,0 +1,14 @@
+[Unit]
+Description=iDotMatrix Calendar Scheduler
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/idotmatrix
+ExecStart=/opt/idotmatrix/venv/bin/python /opt/idotmatrix/calendar_scheduler.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
