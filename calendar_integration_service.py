@@ -31,13 +31,18 @@ def get_current_meeting_service():
         # Create service
         service = build('calendar', 'v3', credentials=credentials)
         
-        # Get current meeting
-        now = datetime.datetime.utcnow().isoformat() + 'Z'
+        # Get current meeting - check for events happening now
+        now = datetime.datetime.utcnow()
+        now_iso = now.isoformat() + 'Z'
+        
+        # Check a wider time range to catch ongoing events
+        time_range_start = (now - datetime.timedelta(hours=1)).isoformat() + 'Z'
+        time_range_end = (now + datetime.timedelta(hours=1)).isoformat() + 'Z'
         
         events_result = service.events().list(
             calendarId='primary',
-            timeMin=now,
-            timeMax=now,
+            timeMin=time_range_start,
+            timeMax=time_range_end,
             singleEvents=True,
             orderBy='startTime'
         ).execute()
@@ -50,9 +55,39 @@ def get_current_meeting_service():
         if not events:
             return None
         
-        event = events[0]
+        # Check each event to see if it's happening now
+        for event in events:
+            summary = event.get('summary', 'No Title')
+            start_time = event.get('start', {})
+            end_time = event.get('end', {})
+            location = event.get('location', '')
+            
+            # Check if event is happening now
+            is_current = False
+            if 'dateTime' in start_time and 'dateTime' in end_time:
+                try:
+                    start_dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
+                    end_dt = datetime.datetime.fromisoformat(end_time['dateTime'].replace('Z', '+00:00'))
+                    now_utc = datetime.datetime.now(datetime.timezone.utc)
+                    
+                    # Check if current time is between start and end
+                    if start_dt <= now_utc <= end_dt:
+                        is_current = True
+                        time_str = start_dt.strftime('%H:%M')
+                        
+                        # Create display text for current event
+                        display_text = f"{summary}"
+                        if time_str:
+                            display_text += f" @ {time_str}"
+                        if location:
+                            display_text += f" ({location})"
+                        
+                        return display_text
+                except:
+                    pass
         
-        # Format meeting for display
+        # If no current event found, return the next upcoming event
+        event = events[0]
         summary = event.get('summary', 'No Title')
         start_time = event.get('start', {})
         location = event.get('location', '')

@@ -159,9 +159,13 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                 return "No events tomorrow"
         
         elif meeting_type == "current":
-            # Get current events
+            # Get current events - check for events happening now
             now = datetime.datetime.now()
             now_utc = now.isoformat() + 'Z'
+            
+            # Check a wider time range to catch ongoing events
+            time_range_start = (now - datetime.timedelta(hours=1)).isoformat() + 'Z'
+            time_range_end = (now + datetime.timedelta(hours=1)).isoformat() + 'Z'
             
             for calendar in calendars:
                 calendar_id = calendar.get('id', '')
@@ -169,8 +173,8 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                 try:
                     events_result = service.events().list(
                         calendarId=calendar_id,
-                        timeMin=now_utc,
-                        maxResults=1,
+                        timeMin=time_range_start,
+                        timeMax=time_range_end,
                         singleEvents=True,
                         orderBy='startTime'
                     ).execute()
@@ -179,6 +183,31 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                     # Filter out all-day events
                     events = filter_events(events)
                     if events:
+                        # Check each event to see if it's happening now
+                        for event in events:
+                            event_summary = event.get('summary', 'No Title')
+                            start_time = event.get('start', {})
+                            end_time = event.get('end', {})
+                            
+                            # Check if event is happening now
+                            is_current = False
+                            if 'dateTime' in start_time and 'dateTime' in end_time:
+                                try:
+                                    start_dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
+                                    end_dt = datetime.datetime.fromisoformat(end_time['dateTime'].replace('Z', '+00:00'))
+                                    now_utc = datetime.datetime.now(datetime.timezone.utc)
+                                    
+                                    # Check if current time is between start and end
+                                    if start_dt <= now_utc <= end_dt:
+                                        is_current = True
+                                        time_str = start_dt.strftime('%H:%M')
+                                except:
+                                    pass
+                            
+                            if is_current:
+                                return f"{event_summary} @ {time_str}"
+                        
+                        # If no current event found, check for the next upcoming event
                         event = events[0]
                         event_summary = event.get('summary', 'No Title')
                         start_time = event.get('start', {})
