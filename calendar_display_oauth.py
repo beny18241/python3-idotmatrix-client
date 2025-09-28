@@ -29,13 +29,18 @@ def get_calendar_info_oauth(meeting_type="current"):
         service = build('calendar', 'v3', credentials=credentials)
         
         if meeting_type == "current":
-            # Get current meeting
-            now = datetime.datetime.utcnow().isoformat() + 'Z'
+            # Get current meeting - check for ongoing events
+            now = datetime.datetime.utcnow()
+            now_iso = now.isoformat() + 'Z'
+            
+            # Check a wider time range to catch ongoing events
+            time_range_start = (now - datetime.timedelta(hours=1)).isoformat() + 'Z'
+            time_range_end = (now + datetime.timedelta(hours=1)).isoformat() + 'Z'
             
             events_result = service.events().list(
                 calendarId='primary',
-                timeMin=now,
-                timeMax=now,
+                timeMin=time_range_start,
+                timeMax=time_range_end,
                 singleEvents=True,
                 orderBy='startTime'
             ).execute()
@@ -45,30 +50,36 @@ def get_calendar_info_oauth(meeting_type="current"):
             if not events:
                 return "Free"
             
-            event = events[0]
-            summary = event.get('summary', 'No Title')
-            start_time = event.get('start', {})
-            location = event.get('location', '')
+            # Check each event to see if it's happening now
+            for event in events:
+                summary = event.get('summary', 'No Title')
+                start_time = event.get('start', {})
+                end_time = event.get('end', {})
+                location = event.get('location', '')
+                
+                # Check if event is happening now
+                if 'dateTime' in start_time and 'dateTime' in end_time:
+                    try:
+                        start_dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
+                        end_dt = datetime.datetime.fromisoformat(end_time['dateTime'].replace('Z', '+00:00'))
+                        now_utc = datetime.datetime.now(datetime.timezone.utc)
+                        
+                        # Check if current time is between start and end
+                        if start_dt <= now_utc <= end_dt:
+                            # Create display text for current event
+                            time_str = start_dt.strftime('%H:%M')
+                            display_text = f"{summary}"
+                            if time_str:
+                                display_text += f" @ {time_str}"
+                            if location:
+                                display_text += f" ({location})"
+                            
+                            return display_text
+                    except:
+                        pass
             
-            # Format time
-            time_str = ""
-            if 'dateTime' in start_time:
-                try:
-                    dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
-                    time_str = dt.strftime('%H:%M')
-                except:
-                    time_str = "Now"
-            elif 'date' in start_time:
-                time_str = "All day"
-            
-            # Create display text
-            display_text = f"{summary}"
-            if time_str:
-                display_text += f" @ {time_str}"
-            if location:
-                display_text += f" ({location})"
-            
-            return display_text
+            # If no current event found, return Free
+            return "Free"
             
         elif meeting_type == "next":
             # Get next meeting

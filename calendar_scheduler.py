@@ -13,15 +13,14 @@ import os
 from datetime import datetime
 
 def get_current_status():
-    """Get current calendar status"""
+    """Get current calendar status using Google Calendar OAuth"""
     
     try:
         from config import DEVICE_ADDRESS
-        from ics_calendar_simple import get_ics_events_for_current_simple
-        from config import ICS_CALENDAR_URL
+        from calendar_display_oauth import get_calendar_info_oauth
         
-        # Get current events from ICS calendar
-        current_events = get_ics_events_for_current_simple(ICS_CALENDAR_URL)
+        # Get current events from Google Calendar OAuth
+        current_events = get_calendar_info_oauth("current")
         
         if current_events and current_events != "Free":
             return "busy", current_events
