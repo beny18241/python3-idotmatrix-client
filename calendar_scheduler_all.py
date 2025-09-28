@@ -177,17 +177,15 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs exist, create if not
-        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
-            logger.info("Creating emoji GIFs...")
-            import create_emoji_gifs_with_meeting_titles
-            create_emoji_gifs_with_meeting_titles.create_free_emoji_gif_with_meeting_title()
-            create_emoji_gifs_with_meeting_titles.create_busy_emoji_gif_with_meeting_title()
-            create_emoji_gifs_with_meeting_titles.create_error_emoji_gif_with_meeting_title()
+        # Check if demo GIFs exist
+        if not os.path.exists("images/demo.gif"):
+            logger.warning("Demo GIF not found: images/demo.gif")
+        if not os.path.exists("images/demo_64.gif"):
+            logger.warning("Demo 64 GIF not found: images/demo_64.gif")
         
         if status == "free":
-            # Animated green checkmark with meeting title for free
-            gif_path = "images/free_emoji_with_meeting_title.gif"
+            # Demo GIF for free status
+            gif_path = "images/demo.gif"
             logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
@@ -198,8 +196,8 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Animated red X with text for busy
-            gif_path = "images/busy_emoji_with_text.gif"
+            # Demo 64 GIF for busy status
+            gif_path = "images/demo_64.gif"
             logger.info(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
