@@ -6,10 +6,10 @@ Wants=network.target
 
 [Service]
 Type=simple
-User=maciejpindela
-Group=staff
-WorkingDirectory=/Users/maciejpindela/Desktop/idotmatrix
-ExecStart=/Users/maciejpindela/Desktop/idotmatrix/venv/bin/python /Users/maciejpindela/Desktop/idotmatrix/calendar_scheduler_all.py
+User=beny
+Group=beny
+WorkingDirectory=/home/beny/Desktop/idotmatrix
+ExecStart=/home/beny/Desktop/idotmatrix/venv/bin/python /home/beny/Desktop/idotmatrix/calendar_scheduler_all.py
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -17,15 +17,14 @@ StandardError=journal
 SyslogIdentifier=idotmatrix-calendar
 
 # Environment variables
-Environment=PATH=/Users/maciejpindela/Desktop/idotmatrix/venv/bin:/usr/local/bin:/usr/bin:/bin
-Environment=PYTHONPATH=/Users/maciejpindela/Desktop/idotmatrix
+Environment=PATH=/home/beny/Desktop/idotmatrix/venv/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONPATH=/home/beny/Desktop/idotmatrix
 
-# Security settings
-NoNewPrivileges=true
-PrivateTmp=true
-ProtectSystem=strict
-ProtectHome=read-only
-ReadWritePaths=/Users/maciejpindela/Desktop/idotmatrix/logs
+# Security settings (relaxed for compatibility)
+NoNewPrivileges=false
+PrivateTmp=false
+ProtectSystem=false
+ProtectHome=false
 
 [Install]
 WantedBy=multi-user.target

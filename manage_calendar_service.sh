@@ -1,8 +1,6 @@
 #!/bin/bash
-"""
-Manage iDotMatrix Calendar Scheduler Service
-Provides easy commands to start, stop, restart, and check status
-"""
+# Manage iDotMatrix Calendar Scheduler Service
+# Provides easy commands to start, stop, restart, and check status
 
 set -e
 

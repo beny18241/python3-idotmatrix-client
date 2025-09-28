@@ -1,8 +1,6 @@
 #!/bin/bash
-"""
-Setup iDotMatrix Calendar Scheduler as a System Service
-Supports both systemd (Linux) and launchd (macOS)
-"""
+# Setup iDotMatrix Calendar Scheduler as a System Service
+# Supports both systemd (Linux) and launchd (macOS)
 
 set -e
 
