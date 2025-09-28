@@ -61,11 +61,16 @@ class GoogleCalendarIntegrationHeadless:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     self.credentials_file, SCOPES)
                 
-                # For headless environments, use the console flow
+                # For headless environments, use the console flow with proper redirect URI
                 print("Please visit the following URL to authorize the application:")
-                print(flow.authorization_url()[0])
-                print("\nAfter authorization, you will be redirected to a page that shows 'This site can't be reached'")
-                print("Copy the 'code' parameter from the URL and paste it here:")
+                auth_url, _ = flow.authorization_url(
+                    access_type='offline',
+                    include_granted_scopes='true',
+                    redirect_uri='urn:ietf:wg:oauth:2.0:oob'  # Out-of-band flow
+                )
+                print(auth_url)
+                print("\nAfter authorization, you will see a page with a code.")
+                print("Copy the authorization code and paste it here:")
                 
                 auth_code = input("Enter the authorization code: ").strip()
                 
