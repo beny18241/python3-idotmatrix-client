@@ -39,7 +39,7 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python calendar_display_complete.py <device_address> [meeting_type]")
         print("  device_address: Bluetooth address of iDotMatrix device")
-        print("  meeting_type: current, next, today (default: current)")
+        print("  meeting_type: current, next, today, tomorrow (default: current)")
         return
     
     device_address = sys.argv[1]

@@ -185,6 +185,160 @@ def get_todays_meetings_count():
         print(f"❌ Failed to get today's meetings: {e}")
         return 0
 
+def get_tomorrow_events():
+    """Get tomorrow's events using service account"""
+    
+    service_account_file = 'service-account.json'
+    
+    if not os.path.exists(service_account_file):
+        print("❌ Service account file not found!")
+        return None
+    
+    try:
+        # Load service account credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            service_account_file,
+            scopes=['https://www.googleapis.com/auth/calendar.readonly']
+        )
+        
+        # Create service
+        service = build('calendar', 'v3', credentials=credentials)
+        
+        # Get tomorrow's events
+        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
+        tomorrow_start = tomorrow.replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow_start_utc = tomorrow_start.isoformat() + 'Z'
+        
+        tomorrow_end = tomorrow.replace(hour=23, minute=59, second=59, microsecond=999999)
+        tomorrow_end_utc = tomorrow_end.isoformat() + 'Z'
+        
+        events_result = service.events().list(
+            calendarId='primary',
+            timeMin=tomorrow_start_utc,
+            timeMax=tomorrow_end_utc,
+            singleEvents=True,
+            orderBy='startTime'
+        ).execute()
+        
+        events = events_result.get('items', [])
+        
+        if not events:
+            return "No events tomorrow"
+        
+        # Format tomorrow's events
+        event_list = []
+        for event in events:
+            summary = event.get('summary', 'No Title')
+            start_time = event.get('start', {})
+            location = event.get('location', '')
+            
+            # Format time
+            time_str = ""
+            if 'dateTime' in start_time:
+                try:
+                    dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
+                    time_str = dt.strftime('%H:%M')
+                except:
+                    time_str = "All day"
+            elif 'date' in start_time:
+                time_str = "All day"
+            
+            # Create display text
+            display_text = f"{summary}"
+            if time_str:
+                display_text += f" @ {time_str}"
+            if location:
+                display_text += f" ({location})"
+            
+            event_list.append(display_text)
+        
+        if len(event_list) == 1:
+            return f"Tomorrow: {event_list[0]}"
+        else:
+            return f"Tomorrow: {len(event_list)} events"
+        
+    except Exception as e:
+        print(f"❌ Failed to get tomorrow's events: {e}")
+        return None
+
+def get_tomorrow_events_detailed():
+    """Get detailed tomorrow's events using service account"""
+    
+    service_account_file = 'service-account.json'
+    
+    if not os.path.exists(service_account_file):
+        print("❌ Service account file not found!")
+        return None
+    
+    try:
+        # Load service account credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            service_account_file,
+            scopes=['https://www.googleapis.com/auth/calendar.readonly']
+        )
+        
+        # Create service
+        service = build('calendar', 'v3', credentials=credentials)
+        
+        # Get tomorrow's events
+        tomorrow = datetime.datetime.now() + datetime.timedelta(days=1)
+        tomorrow_start = tomorrow.replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow_start_utc = tomorrow_start.isoformat() + 'Z'
+        
+        tomorrow_end = tomorrow.replace(hour=23, minute=59, second=59, microsecond=999999)
+        tomorrow_end_utc = tomorrow_end.isoformat() + 'Z'
+        
+        events_result = service.events().list(
+            calendarId='primary',
+            timeMin=tomorrow_start_utc,
+            timeMax=tomorrow_end_utc,
+            singleEvents=True,
+            orderBy='startTime'
+        ).execute()
+        
+        events = events_result.get('items', [])
+        
+        if not events:
+            return "No events tomorrow"
+        
+        # Format tomorrow's events
+        event_list = []
+        for event in events:
+            summary = event.get('summary', 'No Title')
+            start_time = event.get('start', {})
+            location = event.get('location', '')
+            
+            # Format time
+            time_str = ""
+            if 'dateTime' in start_time:
+                try:
+                    dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
+                    time_str = dt.strftime('%H:%M')
+                except:
+                    time_str = "All day"
+            elif 'date' in start_time:
+                time_str = "All day"
+            
+            # Create display text
+            display_text = f"{summary}"
+            if time_str:
+                display_text += f" @ {time_str}"
+            if location:
+                display_text += f" ({location})"
+            
+            event_list.append(display_text)
+        
+        if len(event_list) == 1:
+            return f"Tomorrow: {event_list[0]}"
+        elif len(event_list) <= 3:
+            return f"Tomorrow: {' | '.join(event_list)}"
+        else:
+            return f"Tomorrow: {len(event_list)} events"
+        
+    except Exception as e:
+        print(f"❌ Failed to get tomorrow's events: {e}")
+        return None
+
 def main():
     """Test the service account integration"""
     print("🔧 Testing Service Account Calendar Integration")
@@ -207,6 +361,13 @@ def main():
     # Test today's meetings count
     todays_count = get_todays_meetings_count()
     print(f"📅 Today's meetings: {todays_count}")
+    
+    # Test tomorrow's events
+    tomorrow_events = get_tomorrow_events()
+    if tomorrow_events:
+        print(f"📅 {tomorrow_events}")
+    else:
+        print("📅 No events tomorrow")
     
     print()
     print("✅ Service account integration working!")
