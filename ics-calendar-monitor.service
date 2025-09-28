@@ -1,0 +1,14 @@
+[Unit]
+Description=iDotMatrix ICS Calendar Monitor
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/idotmatrix
+ExecStart=/opt/idotmatrix/venv/bin/python /opt/idotmatrix/ics_auto_refresh.py DD:4F:93:46:DF:1A tomorrow 30
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
