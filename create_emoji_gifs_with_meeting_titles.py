@@ -115,7 +115,7 @@ def create_free_emoji_gif_with_meeting_title(meeting_title=None):
     return gif_path
 
 def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
-    """Create animated red X with 'CALL' text and meeting title for BUSY status"""
+    """Create animated red X with 'BUSY' text and meeting title for BUSY status"""
     
     # Truncate meeting title if too long
     if meeting_title and len(meeting_title) > 8:
@@ -166,85 +166,137 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
         if progress > 0.2:  # Text appears after visual
             text_progress = min(1.0, (progress - 0.2) / 0.8)
             
-            # Draw "CALL" in smaller pixels (2x2 blocks to fit screen)
+            # Draw "BUSY" in smaller pixels (2x2 blocks to fit screen)
             if text_progress > 0.1:
-                # Draw "CALL" in smaller pixels (2x2 blocks)
-                # C - 2x2 block
+                # Draw "BUSY" in smaller pixels (2x2 blocks)
+                # B - 2x2 block
                 for y in range(0, 5):
                     for x in range(0, 3):
-                        if x == 0 or (y == 0) or (y == 4):
+                        if x == 0 or (y == 0) or (y == 2) or (y == 4) or (x == 2 and y != 1 and y != 3):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # A - 2x2 block (proper A shape)
+                # U - 2x2 block
                 for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y > 2):
+                        if x == 4 or x == 6 or (y == 4):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # L - 2x2 block
+                # S - 2x2 block
                 for y in range(0, 5):
                     for x in range(8, 11):
-                        if x == 8 or (y == 4):
+                        if (y == 0) or (y == 2) or (y == 4) or (x == 8 and y < 2) or (x == 10 and y > 2):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # L - 2x2 block
+                # Y - 2x2 block
                 for y in range(0, 5):
                     for x in range(12, 15):
-                        if x == 12 or (y == 4):
+                        if (x == 13 and y < 3) or (y == 2 and x > 12) or (y > 2 and (x == 12 or x == 14)):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
         
-        # Add meeting title if provided (small text at top)
+        # Add meeting title if provided (simple dots pattern)
         if meeting_title and progress > 0.3:
             title_progress = min(1.0, (progress - 0.3) / 0.7)
             if title_progress > 0.2:
-                # Draw meeting title in small 1x1 pixels
+                # Draw meeting title as simple dots pattern
                 title_text = meeting_title.upper()
                 start_x = 2
-                for i, char in enumerate(title_text[:6]):  # Max 6 chars
-                    x_pos = start_x + i * 2
+                for i, char in enumerate(title_text[:8]):  # Max 8 chars
+                    x_pos = start_x + i * 3
                     if x_pos < size - 2:
-                        # Simple character drawing (1x1 pixels)
+                        # Draw each character as a simple pattern of dots
                         if char == 'S':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                             draw.point((x_pos, 2), fill=(255, 255, 255))
                             draw.point((x_pos, 3), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
                         elif char == 'P':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                             draw.point((x_pos, 2), fill=(255, 255, 255))
-                            draw.point((x_pos, 3), fill=(255, 255, 255))
                         elif char == 'O':
-                            draw.point((x_pos, 2), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
                         elif char == 'T':
-                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                         elif char == 'K':
-                            draw.point((x_pos, 2), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
                         elif char == 'A':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                             draw.point((x_pos, 2), fill=(255, 255, 255))
-                            draw.point((x_pos, 3), fill=(255, 255, 255))
                         elif char == 'N':
-                            draw.point((x_pos, 2), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
                         elif char == 'I':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                             draw.point((x_pos, 2), fill=(255, 255, 255))
                             draw.point((x_pos, 3), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
                         elif char == 'E':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
                             draw.point((x_pos, 2), fill=(255, 255, 255))
                             draw.point((x_pos, 3), fill=(255, 255, 255))
-                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'R':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                        elif char == 'M':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'L':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'G':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'U':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'C':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'D':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'F':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                        elif char == 'H':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'J':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'Q':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'V':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'W':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'X':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'Y':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'Z':
+                            draw.point((x_pos, 1), fill=(255, 255, 255))
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        else:
+                            # Default: just a dot for unknown characters
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
         
         frames.append(img)
     
