@@ -240,7 +240,8 @@ def main():
     meeting_type = sys.argv[1]
     
     # ICS calendar URL
-    ics_url = "https://outlook.office365.com/owa/calendar/144d73fdf2654fb3b92983ee16e9d0b3@genpt.com/e829a99fc26b4c66a482420d04ea689513863417029725141930/calendar.ics"
+    # TODO: Replace with your ICS calendar URL
+    ics_url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
     
     print(f"🔧 Getting {meeting_type} events from ICS calendar")
     print("=" * 60)

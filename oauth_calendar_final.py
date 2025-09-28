@@ -196,7 +196,8 @@ def get_ics_calendar_events(meeting_type="tomorrow"):
     
     try:
         print("2️⃣ Checking ICS Calendar...")
-        ics_url = "https://outlook.office365.com/owa/calendar/144d73fdf2654fb3b92983ee16e9d0b3@genpt.com/e829a99fc26b4c66a482420d04ea689513863417029725141930/calendar.ics"
+        # TODO: Replace with your ICS calendar URL
+        ics_url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
         
         # Import here to avoid errors if not available
         from ics_calendar_simple import get_ics_events_for_tomorrow_simple, get_ics_events_for_current_simple, get_ics_events_for_today_simple
