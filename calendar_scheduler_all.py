@@ -180,8 +180,8 @@ def display_status_on_device(status, events):
         # Check if required GIFs exist
         if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
             logger.warning("Free emoji with meeting title GIF not found: images/free_emoji_with_meeting_title.gif")
-        if not os.path.exists("images/demo_64.gif"):
-            logger.warning("Demo 64 GIF not found: images/demo_64.gif")
+        if not os.path.exists("images/busy_emoji_with_text.gif"):
+            logger.warning("Busy emoji with text GIF not found: images/busy_emoji_with_text.gif")
         
         if status == "free":
             # Free emoji with meeting title for free status
@@ -196,8 +196,8 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Demo 64 GIF for busy status
-            gif_path = "images/demo_64.gif"
+            # Busy emoji with text for busy status
+            gif_path = "images/busy_emoji_with_text.gif"
             logger.info(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
