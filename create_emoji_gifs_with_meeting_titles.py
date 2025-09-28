@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-Create animated emoji GIFs with LARGE, visible text overlays for iDotMatrix calendar status
-Creates FREE, CALL, and ERROR animated emojis with prominent text
+Create animated emoji GIFs with meeting titles for iDotMatrix calendar status
+Creates FREE, CALL, and ERROR animated emojis with meeting information
 """
 
 import os
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
-def create_free_emoji_gif_with_large_text(meeting_title=None):
-    """Create animated green checkmark/check emoji with large 'FREE' text for FREE status"""
+def create_free_emoji_gif_with_meeting_title(meeting_title=None):
+    """Create animated green checkmark with 'FREE' text for FREE status"""
     
     # Create frames for the animation
     frames = []
@@ -24,8 +24,8 @@ def create_free_emoji_gif_with_large_text(meeting_title=None):
         progress = i / 7.0
         
         # Draw smaller animated checkmark (top area only)
-        center_x, center_y = size // 2, 8  # Move up to make room for text
-        radius = 6  # Much smaller circle
+        center_x, center_y = size // 2, 6  # Move up to make room for text
+        radius = 4  # Very small circle
         
         # Draw circle (grows from 0 to full size)
         circle_radius = int(radius * progress)
@@ -39,12 +39,12 @@ def create_free_emoji_gif_with_large_text(meeting_title=None):
             check_progress = min(1.0, (progress - 0.3) / 0.7)
             
             # Checkmark points (smaller)
-            check_x1 = center_x - 3
+            check_x1 = center_x - 2
             check_y1 = center_y
             check_x2 = center_x - 1
-            check_y2 = center_y + 2
-            check_x3 = center_x + 3
-            check_y3 = center_y - 2
+            check_y2 = center_y + 1
+            check_x3 = center_x + 2
+            check_y3 = center_y - 1
             
             # Draw checkmark with animation
             if check_progress > 0:
@@ -60,12 +60,12 @@ def create_free_emoji_gif_with_large_text(meeting_title=None):
                     draw.line([check_x2, check_y2, end_x, end_y], 
                              fill=(255, 255, 255), width=2)
         
-        # Add extra large "FREE" text overlay - very prominent
-        if progress > 0.2:  # Text appears even earlier
-            text_progress = min(1.0, (progress - 0.2) / 0.8)
+        # Add massive "FREE" text overlay - very prominent
+        if progress > 0.1:  # Text appears very early
+            text_progress = min(1.0, (progress - 0.1) / 0.9)
             
             # Draw "FREE" in massive pixels (4x4 blocks for maximum visibility)
-            if text_progress > 0.1:
+            if text_progress > 0.05:
                 # Draw "FREE" in massive pixels (4x4 blocks)
                 # F - 4x4 block
                 for y in range(0, 6):
@@ -107,15 +107,15 @@ def create_free_emoji_gif_with_large_text(meeting_title=None):
         frames.append(img)
     
     # Save as GIF
-    gif_path = "images/free_emoji_with_large_text.gif"
+    gif_path = "images/free_emoji_with_meeting_title.gif"
     os.makedirs("images", exist_ok=True)
     frames[0].save(gif_path, save_all=True, append_images=frames[1:], 
                    duration=150, loop=0)
-    print(f"✅ Created FREE emoji with large text GIF: {gif_path}")
+    print(f"✅ Created FREE emoji with meeting title GIF: {gif_path}")
     return gif_path
 
-def create_busy_emoji_gif_with_large_text(meeting_title=None):
-    """Create animated red X or stop emoji with large 'CALL' text for BUSY status"""
+def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
+    """Create animated red X with 'CALL' text and meeting title for BUSY status"""
     
     # Create frames for the animation
     frames = []
@@ -130,8 +130,8 @@ def create_busy_emoji_gif_with_large_text(meeting_title=None):
         progress = i / 7.0
         
         # Draw smaller animated X (top area only)
-        center_x, center_y = size // 2, 8  # Move up to make room for text
-        radius = 6  # Much smaller circle
+        center_x, center_y = size // 2, 6  # Move up to make room for text
+        radius = 4  # Very small circle
         
         # Draw circle (grows from 0 to full size)
         circle_radius = int(radius * progress)
@@ -145,7 +145,7 @@ def create_busy_emoji_gif_with_large_text(meeting_title=None):
             x_progress = min(1.0, (progress - 0.3) / 0.7)
             
             # X lines (smaller)
-            x_size = 4
+            x_size = 3
             if x_progress > 0:
                 # First diagonal
                 if x_progress > 0.5:
@@ -159,11 +159,11 @@ def create_busy_emoji_gif_with_large_text(meeting_title=None):
                              fill=(255, 255, 255), width=2)
         
         # Add massive "CALL" text overlay - very prominent
-        if progress > 0.2:  # Text appears even earlier
-            text_progress = min(1.0, (progress - 0.2) / 0.8)
+        if progress > 0.1:  # Text appears very early
+            text_progress = min(1.0, (progress - 0.1) / 0.9)
             
             # Draw "CALL" in massive pixels (4x4 blocks for maximum visibility)
-            if text_progress > 0.1:
+            if text_progress > 0.05:
                 # Draw "CALL" in massive pixels (4x4 blocks)
                 # C - 4x4 block
                 for y in range(0, 6):
@@ -204,15 +204,15 @@ def create_busy_emoji_gif_with_large_text(meeting_title=None):
         frames.append(img)
     
     # Save as GIF
-    gif_path = "images/busy_emoji_with_large_text.gif"
+    gif_path = "images/busy_emoji_with_meeting_title.gif"
     os.makedirs("images", exist_ok=True)
     frames[0].save(gif_path, save_all=True, append_images=frames[1:], 
                    duration=150, loop=0)
-    print(f"✅ Created BUSY emoji with large text GIF: {gif_path}")
+    print(f"✅ Created BUSY emoji with meeting title GIF: {gif_path}")
     return gif_path
 
-def create_error_emoji_gif_with_large_text():
-    """Create animated orange warning emoji with large 'ERROR' text for ERROR status"""
+def create_error_emoji_gif_with_meeting_title(meeting_title=None):
+    """Create animated orange warning with 'ERROR' text for ERROR status"""
     
     # Create frames for the animation
     frames = []
@@ -226,9 +226,9 @@ def create_error_emoji_gif_with_large_text():
         # Calculate animation progress (0 to 1)
         progress = i / 7.0
         
-        # Draw animated warning triangle
-        center_x, center_y = size // 2, size // 2
-        triangle_size = 10  # Smaller triangle to make room for text
+        # Draw smaller animated warning triangle (top area only)
+        center_x, center_y = size // 2, 6  # Move up to make room for text
+        triangle_size = 4  # Very small triangle
         
         # Draw triangle (grows from 0 to full size)
         if progress > 0:
@@ -252,8 +252,8 @@ def create_error_emoji_gif_with_large_text():
             
             # Exclamation mark
             exclamation_x = center_x
-            exclamation_y = center_y - 2
-            exclamation_height = 4
+            exclamation_y = center_y - 1
+            exclamation_height = 3
             
             if exclamation_progress > 0:
                 current_height = int(exclamation_height * exclamation_progress)
@@ -266,82 +266,82 @@ def create_error_emoji_gif_with_large_text():
                                 exclamation_x + 1, exclamation_y + 3], 
                                fill=(255, 255, 255))
         
-        # Add extra large "ERROR" text overlay - very prominent
-        if progress > 0.3:  # Text appears earlier
-            text_progress = min(1.0, (progress - 0.3) / 0.7)
+        # Add massive "ERROR" text overlay - very prominent
+        if progress > 0.1:  # Text appears very early
+            text_progress = min(1.0, (progress - 0.1) / 0.9)
             
-            # Draw extra large pixelated "ERROR" text (3x3 pixels per letter)
-            if text_progress > 0.2:
-                # Draw "ERROR" in extra large pixels (3x3 blocks)
-                # E - 3x3 block
-                for y in range(1, 7):
-                    for x in range(1, 4):
-                        if x == 1 or (y == 1) or (y == 4) or (y == 6):
-                            for dy in range(3):
-                                for dx in range(3):
-                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
-                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
+            # Draw "ERROR" in massive pixels (4x4 blocks for maximum visibility)
+            if text_progress > 0.05:
+                # Draw "ERROR" in massive pixels (4x4 blocks)
+                # E - 4x4 block
+                for y in range(0, 6):
+                    for x in range(0, 3):
+                        if x == 0 or (y == 0) or (y == 3) or (y == 5):
+                            for dy in range(4):
+                                for dx in range(4):
+                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
+                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
                 
-                # R - 3x3 block
-                for y in range(1, 7):
-                    for x in range(5, 8):
-                        if x == 5 or (y == 1) or (y == 4) or (x == 7 and y > 4):
-                            for dy in range(3):
-                                for dx in range(3):
-                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
-                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
+                # R - 4x4 block
+                for y in range(0, 6):
+                    for x in range(4, 7):
+                        if x == 4 or (y == 0) or (y == 3) or (x == 6 and y > 3):
+                            for dy in range(4):
+                                for dx in range(4):
+                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
+                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
                 
-                # R - 3x3 block
-                for y in range(1, 7):
-                    for x in range(9, 12):
-                        if x == 9 or (y == 1) or (y == 4) or (x == 11 and y > 4):
-                            for dy in range(3):
-                                for dx in range(3):
-                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
-                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
+                # R - 4x4 block
+                for y in range(0, 6):
+                    for x in range(8, 11):
+                        if x == 8 or (y == 0) or (y == 3) or (x == 10 and y > 3):
+                            for dy in range(4):
+                                for dx in range(4):
+                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
+                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
                 
-                # O - 3x3 block
-                for y in range(1, 7):
-                    for x in range(13, 16):
-                        if (x == 13 and y > 1 and y < 6) or (x == 15 and y > 1 and y < 6) or (y == 1 and x > 13 and x < 16) or (y == 6 and x > 13 and x < 16):
-                            for dy in range(3):
-                                for dx in range(3):
-                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
-                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
+                # O - 4x4 block
+                for y in range(0, 6):
+                    for x in range(12, 15):
+                        if (x == 12 and y > 0 and y < 5) or (x == 14 and y > 0 and y < 5) or (y == 0 and x > 12 and x < 15) or (y == 5 and x > 12 and x < 15):
+                            for dy in range(4):
+                                for dx in range(4):
+                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
+                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
                 
-                # R - 3x3 block
-                for y in range(1, 7):
-                    for x in range(17, 20):
-                        if x == 17 or (y == 1) or (y == 4) or (x == 19 and y > 4):
-                            for dy in range(3):
-                                for dx in range(3):
-                                    if 0 <= x*3+dx < size and 0 <= y*3+dy < size:
-                                        draw.point((x*3+dx, y*3+dy), fill=(255, 165, 0))
+                # R - 4x4 block
+                for y in range(0, 6):
+                    for x in range(16, 19):
+                        if x == 16 or (y == 0) or (y == 3) or (x == 18 and y > 3):
+                            for dy in range(4):
+                                for dx in range(4):
+                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
+                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
         
         frames.append(img)
     
     # Save as GIF
-    gif_path = "images/error_emoji_with_large_text.gif"
+    gif_path = "images/error_emoji_with_meeting_title.gif"
     os.makedirs("images", exist_ok=True)
     frames[0].save(gif_path, save_all=True, append_images=frames[1:], 
                    duration=150, loop=0)
-    print(f"✅ Created ERROR emoji with large text GIF: {gif_path}")
+    print(f"✅ Created ERROR emoji with meeting title GIF: {gif_path}")
     return gif_path
 
 def main():
-    """Create all emoji GIFs with large, visible text overlays"""
-    print("🎬 Creating animated emoji GIFs with LARGE text overlays for iDotMatrix...")
+    """Create all emoji GIFs with meeting titles"""
+    print("🎬 Creating animated emoji GIFs with meeting titles for iDotMatrix...")
     
-    # Create all GIFs with large text
-    free_gif = create_free_emoji_gif_with_large_text()
-    busy_gif = create_busy_emoji_gif_with_large_text()
-    error_gif = create_error_emoji_gif_with_large_text()
+    # Create all GIFs with meeting titles
+    free_gif = create_free_emoji_gif_with_meeting_title()
+    busy_gif = create_busy_emoji_gif_with_meeting_title()
+    error_gif = create_error_emoji_gif_with_meeting_title()
     
-    print("\n🎉 All emoji GIFs with large text created successfully!")
-    print(f"📁 FREE emoji with large text: {free_gif}")
-    print(f"📁 CALL emoji with large text: {busy_gif}")
-    print(f"📁 ERROR emoji with large text: {error_gif}")
-    print("\n💡 These GIFs have larger, more visible text for the iDotMatrix display")
+    print("\n🎉 All emoji GIFs with meeting titles created successfully!")
+    print(f"📁 FREE emoji with meeting title: {free_gif}")
+    print(f"📁 CALL emoji with meeting title: {busy_gif}")
+    print(f"📁 ERROR emoji with meeting title: {error_gif}")
+    print("\n💡 These GIFs have smaller visuals and larger text for maximum visibility")
 
 if __name__ == "__main__":
     main()

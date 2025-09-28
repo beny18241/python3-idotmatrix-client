@@ -177,16 +177,16 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs with large text exist, create them if not
-        if not os.path.exists("images/free_emoji_with_large_text.gif"):
-            logger.info("Creating emoji GIFs with large text overlays...")
-            import create_emoji_gifs_with_large_text
-            create_emoji_gifs_with_large_text.main()
+        # Check if emoji GIFs with meeting titles exist, create them if not
+        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
+            logger.info("Creating emoji GIFs with meeting titles...")
+            import create_emoji_gifs_with_meeting_titles
+            create_emoji_gifs_with_meeting_titles.main()
         
         if status == "free":
             # Animated green checkmark with large "FREE" text for free
-            gif_path = "images/free_emoji_with_large_text.gif"
-            logger.info(f"Displaying FREE animation with large text: {gif_path}")
+            gif_path = "images/free_emoji_with_meeting_title.gif"
+            logger.info(f"Displaying FREE animation with meeting title: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -197,8 +197,8 @@ def display_status_on_device(status, events):
             
         elif status == "busy":
             # Animated red X with large "CALL" text for busy
-            gif_path = "images/busy_emoji_with_large_text.gif"
-            logger.info(f"Displaying CALL animation with large text: {gif_path}")
+            gif_path = "images/busy_emoji_with_meeting_title.gif"
+            logger.info(f"Displaying CALL animation with meeting title: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -209,8 +209,8 @@ def display_status_on_device(status, events):
             
         else:
             # Animated orange warning with large "ERROR" text for error
-            gif_path = "images/error_emoji_with_large_text.gif"
-            logger.info(f"Displaying ERROR animation with large text: {gif_path}")
+            gif_path = "images/error_emoji_with_meeting_title.gif"
+            logger.info(f"Displaying ERROR animation with meeting title: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
