@@ -117,6 +117,10 @@ def create_free_emoji_gif_with_meeting_title(meeting_title=None):
 def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
     """Create animated red X with 'CALL' text and meeting title for BUSY status"""
     
+    # Truncate meeting title if too long
+    if meeting_title and len(meeting_title) > 8:
+        meeting_title = meeting_title[:8] + "..."
+    
     # Create frames for the animation
     frames = []
     size = 32  # 32x32 pixels
@@ -174,10 +178,10 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # A - 2x2 block
+                # A - 2x2 block (proper A shape)
                 for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y < 3):
+                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y > 2):
                             for dy in range(2):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
@@ -200,6 +204,47 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
                                 for dx in range(2):
                                     if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
                                         draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
+        
+        # Add meeting title if provided (small text at top)
+        if meeting_title and progress > 0.3:
+            title_progress = min(1.0, (progress - 0.3) / 0.7)
+            if title_progress > 0.2:
+                # Draw meeting title in small 1x1 pixels
+                title_text = meeting_title.upper()
+                start_x = 2
+                for i, char in enumerate(title_text[:6]):  # Max 6 chars
+                    x_pos = start_x + i * 2
+                    if x_pos < size - 2:
+                        # Simple character drawing (1x1 pixels)
+                        if char == 'S':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'P':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'O':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'T':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                        elif char == 'K':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'A':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                        elif char == 'N':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'I':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
+                        elif char == 'E':
+                            draw.point((x_pos, 2), fill=(255, 255, 255))
+                            draw.point((x_pos, 3), fill=(255, 255, 255))
+                            draw.point((x_pos, 4), fill=(255, 255, 255))
         
         frames.append(img)
     

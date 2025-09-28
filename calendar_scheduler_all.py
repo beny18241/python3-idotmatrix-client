@@ -196,8 +196,9 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Animated red X with large "CALL" text for busy
-            gif_path = "images/busy_emoji_with_meeting_title.gif"
+            # Create GIF with meeting title
+            import create_emoji_gifs_with_meeting_titles
+            gif_path = create_emoji_gifs_with_meeting_titles.create_busy_emoji_gif_with_meeting_title(events)
             logger.info(f"Displaying CALL animation with meeting title: {gif_path}")
             
             # Use the run script to display animated GIF
