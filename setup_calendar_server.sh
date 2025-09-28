@@ -22,12 +22,27 @@ fi
 
 echo "✅ Found credentials.json"
 
+# Check if we're in a virtual environment
+if [ -f "venv/bin/activate" ]; then
+    echo "🐍 Activating virtual environment..."
+    source venv/bin/activate
+    PYTHON_CMD="python"
+else
+    echo "🐍 Using system Python..."
+    PYTHON_CMD="python3"
+fi
+
+# Install Google API dependencies
+echo "📦 Installing Google Calendar API dependencies..."
+$PYTHON_CMD -m pip install --upgrade pip
+$PYTHON_CMD -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 # Test the headless authentication
 echo "🔐 Testing Google Calendar authentication..."
 echo "This will open a URL for you to authorize the application."
 echo ""
 
-python3 calendar_integration_headless.py
+$PYTHON_CMD calendar_integration_headless.py
 
 echo ""
 echo "✅ Calendar setup complete!"
