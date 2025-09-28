@@ -23,8 +23,8 @@ def create_free_emoji_gif_with_meeting_title(meeting_title=None):
         # Calculate animation progress (0 to 1)
         progress = i / 7.0
         
-        # Draw smaller animated checkmark (top area only)
-        center_x, center_y = size // 2, 6  # Move up to make room for text
+        # Draw smaller animated checkmark (bottom area only)
+        center_x, center_y = size // 2, 26  # Move to bottom to make room for text
         radius = 4  # Very small circle
         
         # Draw circle (grows from 0 to full size)
@@ -60,49 +60,49 @@ def create_free_emoji_gif_with_meeting_title(meeting_title=None):
                     draw.line([check_x2, check_y2, end_x, end_y], 
                              fill=(255, 255, 255), width=2)
         
-        # Add massive "FREE" text overlay - very prominent
-        if progress > 0.1:  # Text appears very early
-            text_progress = min(1.0, (progress - 0.1) / 0.9)
+        # Add smaller "FREE" text overlay - fits screen better
+        if progress > 0.2:  # Text appears after visual
+            text_progress = min(1.0, (progress - 0.2) / 0.8)
             
-            # Draw "FREE" in massive pixels (4x4 blocks for maximum visibility)
-            if text_progress > 0.05:
-                # Draw "FREE" in massive pixels (4x4 blocks)
-                # F - 4x4 block
-                for y in range(0, 6):
+            # Draw "FREE" in smaller pixels (2x2 blocks to fit screen)
+            if text_progress > 0.1:
+                # Draw "FREE" in smaller pixels (2x2 blocks)
+                # F - 2x2 block
+                for y in range(0, 5):
                     for x in range(0, 3):
-                        if x == 0 or (y == 0) or (y == 3):
-                            # Draw 4x4 block for each pixel
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(0, 255, 0))
+                        if x == 0 or (y == 0) or (y == 2):
+                            # Draw 2x2 block for each pixel
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(0, 255, 0))
                 
-                # R - 4x4 block
-                for y in range(0, 6):
+                # R - 2x2 block
+                for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 3) or (x == 6 and y > 3):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(0, 255, 0))
+                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y > 2):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(0, 255, 0))
                 
-                # E - 4x4 block
-                for y in range(0, 6):
+                # E - 2x2 block
+                for y in range(0, 5):
                     for x in range(8, 11):
-                        if x == 8 or (y == 0) or (y == 3) or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(0, 255, 0))
+                        if x == 8 or (y == 0) or (y == 2) or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(0, 255, 0))
                 
-                # E - 4x4 block
-                for y in range(0, 6):
+                # E - 2x2 block
+                for y in range(0, 5):
                     for x in range(12, 15):
-                        if x == 12 or (y == 0) or (y == 3) or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(0, 255, 0))
+                        if x == 12 or (y == 0) or (y == 2) or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(0, 255, 0))
         
         frames.append(img)
     
@@ -129,8 +129,8 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
         # Calculate animation progress (0 to 1)
         progress = i / 7.0
         
-        # Draw smaller animated X (top area only)
-        center_x, center_y = size // 2, 6  # Move up to make room for text
+        # Draw smaller animated X (bottom area only)
+        center_x, center_y = size // 2, 26  # Move to bottom to make room for text
         radius = 4  # Very small circle
         
         # Draw circle (grows from 0 to full size)
@@ -158,48 +158,48 @@ def create_busy_emoji_gif_with_meeting_title(meeting_title=None):
                              center_x + x_size, center_y - x_size], 
                              fill=(255, 255, 255), width=2)
         
-        # Add massive "CALL" text overlay - very prominent
-        if progress > 0.1:  # Text appears very early
-            text_progress = min(1.0, (progress - 0.1) / 0.9)
+        # Add smaller "CALL" text overlay - fits screen better
+        if progress > 0.2:  # Text appears after visual
+            text_progress = min(1.0, (progress - 0.2) / 0.8)
             
-            # Draw "CALL" in massive pixels (4x4 blocks for maximum visibility)
-            if text_progress > 0.05:
-                # Draw "CALL" in massive pixels (4x4 blocks)
-                # C - 4x4 block
-                for y in range(0, 6):
+            # Draw "CALL" in smaller pixels (2x2 blocks to fit screen)
+            if text_progress > 0.1:
+                # Draw "CALL" in smaller pixels (2x2 blocks)
+                # C - 2x2 block
+                for y in range(0, 5):
                     for x in range(0, 3):
-                        if x == 0 or (y == 0) or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 0, 0))
+                        if x == 0 or (y == 0) or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # A - 4x4 block
-                for y in range(0, 6):
+                # A - 2x2 block
+                for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 3) or (x == 6 and y < 3):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 0, 0))
+                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y < 2):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # L - 4x4 block
-                for y in range(0, 6):
+                # L - 2x2 block
+                for y in range(0, 5):
                     for x in range(8, 11):
-                        if x == 8 or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 0, 0))
+                        if x == 8 or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
                 
-                # L - 4x4 block
-                for y in range(0, 6):
+                # L - 2x2 block
+                for y in range(0, 5):
                     for x in range(12, 15):
-                        if x == 12 or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 0, 0))
+                        if x == 12 or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 0, 0))
         
         frames.append(img)
     
@@ -226,8 +226,8 @@ def create_error_emoji_gif_with_meeting_title(meeting_title=None):
         # Calculate animation progress (0 to 1)
         progress = i / 7.0
         
-        # Draw smaller animated warning triangle (top area only)
-        center_x, center_y = size // 2, 6  # Move up to make room for text
+        # Draw smaller animated warning triangle (bottom area only)
+        center_x, center_y = size // 2, 26  # Move to bottom to make room for text
         triangle_size = 4  # Very small triangle
         
         # Draw triangle (grows from 0 to full size)
@@ -266,57 +266,57 @@ def create_error_emoji_gif_with_meeting_title(meeting_title=None):
                                 exclamation_x + 1, exclamation_y + 3], 
                                fill=(255, 255, 255))
         
-        # Add massive "ERROR" text overlay - very prominent
-        if progress > 0.1:  # Text appears very early
-            text_progress = min(1.0, (progress - 0.1) / 0.9)
+        # Add smaller "ERROR" text overlay - fits screen better
+        if progress > 0.2:  # Text appears after visual
+            text_progress = min(1.0, (progress - 0.2) / 0.8)
             
-            # Draw "ERROR" in massive pixels (4x4 blocks for maximum visibility)
-            if text_progress > 0.05:
-                # Draw "ERROR" in massive pixels (4x4 blocks)
-                # E - 4x4 block
-                for y in range(0, 6):
+            # Draw "ERROR" in smaller pixels (2x2 blocks to fit screen)
+            if text_progress > 0.1:
+                # Draw "ERROR" in smaller pixels (2x2 blocks)
+                # E - 2x2 block
+                for y in range(0, 5):
                     for x in range(0, 3):
-                        if x == 0 or (y == 0) or (y == 3) or (y == 5):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
+                        if x == 0 or (y == 0) or (y == 2) or (y == 4):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 165, 0))
                 
-                # R - 4x4 block
-                for y in range(0, 6):
+                # R - 2x2 block
+                for y in range(0, 5):
                     for x in range(4, 7):
-                        if x == 4 or (y == 0) or (y == 3) or (x == 6 and y > 3):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
+                        if x == 4 or (y == 0) or (y == 2) or (x == 6 and y > 2):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 165, 0))
                 
-                # R - 4x4 block
-                for y in range(0, 6):
+                # R - 2x2 block
+                for y in range(0, 5):
                     for x in range(8, 11):
-                        if x == 8 or (y == 0) or (y == 3) or (x == 10 and y > 3):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
+                        if x == 8 or (y == 0) or (y == 2) or (x == 10 and y > 2):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 165, 0))
                 
-                # O - 4x4 block
-                for y in range(0, 6):
+                # O - 2x2 block
+                for y in range(0, 5):
                     for x in range(12, 15):
-                        if (x == 12 and y > 0 and y < 5) or (x == 14 and y > 0 and y < 5) or (y == 0 and x > 12 and x < 15) or (y == 5 and x > 12 and x < 15):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
+                        if (x == 12 and y > 0 and y < 4) or (x == 14 and y > 0 and y < 4) or (y == 0 and x > 12 and x < 15) or (y == 4 and x > 12 and x < 15):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 165, 0))
                 
-                # R - 4x4 block
-                for y in range(0, 6):
+                # R - 2x2 block
+                for y in range(0, 5):
                     for x in range(16, 19):
-                        if x == 16 or (y == 0) or (y == 3) or (x == 18 and y > 3):
-                            for dy in range(4):
-                                for dx in range(4):
-                                    if 0 <= x*4+dx < size and 0 <= y*4+dy < size:
-                                        draw.point((x*4+dx, y*4+dy), fill=(255, 165, 0))
+                        if x == 16 or (y == 0) or (y == 2) or (x == 18 and y > 2):
+                            for dy in range(2):
+                                for dx in range(2):
+                                    if 0 <= x*2+dx < size and 0 <= y*2+dy < size:
+                                        draw.point((x*2+dx, y*2+dy), fill=(255, 165, 0))
         
         frames.append(img)
     
