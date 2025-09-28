@@ -177,17 +177,17 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs with text exist, create if not
-        if not os.path.exists("images/free_emoji_with_text.gif"):
-            logger.info("Creating emoji GIFs with text...")
-            import create_emoji_gifs_with_text
-            create_emoji_gifs_with_text.create_free_emoji_gif()
-            create_emoji_gifs_with_text.create_busy_emoji_gif()
-            create_emoji_gifs_with_text.create_error_emoji_gif()
+        # Check if emoji GIFs exist, create if not
+        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
+            logger.info("Creating emoji GIFs...")
+            import create_emoji_gifs_with_meeting_titles
+            create_emoji_gifs_with_meeting_titles.create_free_emoji_gif_with_meeting_title()
+            create_emoji_gifs_with_meeting_titles.create_busy_emoji_gif_with_meeting_title()
+            create_emoji_gifs_with_meeting_titles.create_error_emoji_gif_with_meeting_title()
         
         if status == "free":
-            # Animated green checkmark with text for free
-            gif_path = "images/free_emoji_with_text.gif"
+            # Animated green checkmark with meeting title for free
+            gif_path = "images/free_emoji_with_meeting_title.gif"
             logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
