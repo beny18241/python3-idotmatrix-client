@@ -1,133 +1,244 @@
 #!/usr/bin/env python3
 """
-Debug script to show how imported calendars are detected
-Shows the complete process of calendar discovery
+Debug Calendar Access
+Comprehensive diagnostic to identify calendar access issues
 """
 
 import os
 import json
+import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 
-def debug_calendar_discovery():
-    """Debug how the system discovers imported calendars"""
+def debug_service_account():
+    """Debug service account configuration"""
     
-    print("🔍 Debug: How Imported Calendars are Detected")
-    print("=" * 60)
+    print("1️⃣ Service Account Configuration")
+    print("=" * 40)
     
-    # Check if service account exists
     if not os.path.exists('service-account.json'):
-        print("❌ Service account file not found!")
-        print("Please run: python calendar_service_account.py")
+        print("❌ service-account.json not found!")
         return False
     
     try:
-        # Load service account credentials
-        print("1️⃣ Loading service account credentials...")
-        credentials = service_account.Credentials.from_service_account_file(
-            'service-account.json',
-            scopes=['https://www.googleapis.com/auth/calendar.readonly']
-        )
-        print("✅ Service account credentials loaded")
+        with open('service-account.json', 'r') as f:
+            service_account_data = json.load(f)
         
-        # Create service
-        print("2️⃣ Creating Google Calendar API service...")
-        service = build('calendar', 'v3', credentials=credentials)
-        print("✅ Google Calendar API service created")
-        
-        # Get calendar list - THIS IS THE KEY STEP
-        print("3️⃣ Requesting calendar list from Google...")
-        print("   API Call: service.calendarList().list().execute()")
-        calendar_list = service.calendarList().list().execute()
-        calendars = calendar_list.get('items', [])
-        print(f"✅ Found {len(calendars)} calendars from Google API")
-        
-        print()
-        print("4️⃣ Analyzing each calendar:")
-        print("=" * 40)
-        
-        own_calendars = []
-        imported_calendars = []
-        other_calendars = []
-        
-        for i, calendar in enumerate(calendars):
-            calendar_id = calendar.get('id', '')
-            summary = calendar.get('summary', 'No Title')
-            access_role = calendar.get('accessRole', '')
-            description = calendar.get('description', '')
-            primary = calendar.get('primary', False)
-            
-            print(f"📅 Calendar {i+1}: {summary}")
-            print(f"   ID: {calendar_id}")
-            print(f"   Access Role: {access_role}")
-            print(f"   Primary: {primary}")
-            if description:
-                print(f"   Description: {description}")
-            
-            # Categorize calendar
-            if access_role == 'owner':
-                own_calendars.append(calendar)
-                print("   ✅ OWN CALENDAR (you own this)")
-            elif access_role == 'writer':
-                own_calendars.append(calendar)
-                print("   ✅ OWN CALENDAR (you can write to this)")
-            elif access_role == 'reader':
-                imported_calendars.append(calendar)
-                print("   📥 IMPORTED CALENDAR (you can only read this)")
-            else:
-                other_calendars.append(calendar)
-                print(f"   ❓ OTHER ({access_role})")
-            
-            print()
-        
-        print("5️⃣ Summary:")
-        print("=" * 20)
-        print(f"📊 Total calendars: {len(calendars)}")
-        print(f"✅ Own calendars: {len(own_calendars)}")
-        print(f"📥 Imported calendars: {len(imported_calendars)}")
-        print(f"❓ Other calendars: {len(other_calendars)}")
-        print()
-        
-        if imported_calendars:
-            print("📥 Imported calendars found:")
-            for calendar in imported_calendars:
-                summary = calendar.get('summary', 'No Title')
-                calendar_id = calendar.get('id', '')
-                print(f"   - {summary}")
-                print(f"     ID: {calendar_id}")
-            print()
-            print("🎯 These imported calendars can be accessed if:")
-            print("   1. The service account has permission to access them")
-            print("   2. The calendar owner shared them with the service account")
-            print("   3. Your Google account has the right permissions")
-        else:
-            print("📥 No imported calendars found")
-            print("   This means either:")
-            print("   - You don't have access to any imported calendars")
-            print("   - The imported calendars aren't shared with the service account")
-        
-        print()
-        print("🔧 How the system works:")
-        print("   1. Google Calendar API returns ALL calendars you have access to")
-        print("   2. The system checks the 'accessRole' field for each calendar")
-        print("   3. 'owner'/'writer' = your own calendars")
-        print("   4. 'reader' = imported calendars from others")
-        print("   5. The system tries to access events from all calendars")
+        print("✅ service-account.json found")
+        print(f"   📧 Email: {service_account_data.get('client_email', 'Unknown')}")
+        print(f"   🏢 Project: {service_account_data.get('project_id', 'Unknown')}")
+        print(f"   🔑 Type: {service_account_data.get('type', 'Unknown')}")
         
         return True
         
     except Exception as e:
-        print(f"❌ Error during calendar discovery: {e}")
-        print()
-        print("🔧 Troubleshooting:")
-        print("   1. Make sure service-account.json exists")
-        print("   2. Check that the service account has calendar permissions")
-        print("   3. Verify that your calendars are shared with the service account")
+        print(f"❌ Error reading service-account.json: {e}")
         return False
+
+def debug_api_access():
+    """Debug Google Calendar API access"""
+    
+    print("\n2️⃣ Google Calendar API Access")
+    print("=" * 40)
+    
+    try:
+        # Load service account credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            'service-account.json',
+            scopes=['https://www.googleapis.com/auth/calendar.readonly']
+        )
+        
+        print("✅ Service account credentials loaded")
+        
+        # Create service
+        service = build('calendar', 'v3', credentials=credentials)
+        print("✅ Google Calendar API service created")
+        
+        # Test API access with a simple call
+        try:
+            # Try to get calendar list
+            calendar_list = service.calendarList().list().execute()
+            calendars = calendar_list.get('items', [])
+            
+            print(f"✅ API access successful")
+            print(f"📅 Found {len(calendars)} calendars")
+            
+            if calendars:
+                print("\n📋 Calendar Details:")
+                for i, calendar in enumerate(calendars):
+                    calendar_id = calendar.get('id', 'Unknown')
+                    summary = calendar.get('summary', 'No Title')
+                    access_role = calendar.get('accessRole', 'Unknown')
+                    primary = calendar.get('primary', False)
+                    
+                    print(f"   {i+1}. {summary}")
+                    print(f"      ID: {calendar_id}")
+                    print(f"      Role: {access_role}")
+                    print(f"      Primary: {primary}")
+                    print()
+            
+            return True, calendars
+            
+        except HttpError as e:
+            print(f"❌ HTTP Error: {e}")
+            print(f"   Status: {e.resp.status}")
+            print(f"   Reason: {e.resp.reason}")
+            
+            if e.resp.status == 403:
+                print("   💡 This suggests permission issues")
+            elif e.resp.status == 404:
+                print("   💡 This suggests API not enabled")
+            elif e.resp.status == 401:
+                print("   💡 This suggests authentication issues")
+            
+            return False, []
+            
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return False, []
+
+def debug_calendar_sharing():
+    """Debug calendar sharing issues"""
+    
+    print("\n3️⃣ Calendar Sharing Debug")
+    print("=" * 40)
+    
+    try:
+        # Load service account credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            'service-account.json',
+            scopes=['https://www.googleapis.com/auth/calendar.readonly']
+        )
+        
+        # Create service
+        service = build('calendar', 'v3', credentials=credentials)
+        
+        # Try to get primary calendar
+        try:
+            primary_calendar = service.calendars().get(calendarId='primary').execute()
+            print("✅ Primary calendar accessible")
+            print(f"   📅 Summary: {primary_calendar.get('summary', 'Unknown')}")
+            print(f"   🆔 ID: {primary_calendar.get('id', 'Unknown')}")
+            print(f"   📧 Owner: {primary_calendar.get('summary', 'Unknown')}")
+            
+        except HttpError as e:
+            print(f"❌ Primary calendar not accessible: {e}")
+            if e.resp.status == 403:
+                print("   💡 Primary calendar not shared with service account")
+            elif e.resp.status == 404:
+                print("   💡 Primary calendar not found")
+        
+        # Try to get calendar list
+        try:
+            calendar_list = service.calendarList().list().execute()
+            calendars = calendar_list.get('items', [])
+            
+            if calendars:
+                print(f"✅ Found {len(calendars)} accessible calendars")
+                
+                # Check each calendar's access
+                for calendar in calendars:
+                    calendar_id = calendar.get('id', '')
+                    summary = calendar.get('summary', 'Unknown')
+                    access_role = calendar.get('accessRole', 'Unknown')
+                    
+                    print(f"   📅 {summary}")
+                    print(f"      Role: {access_role}")
+                    
+                    # Try to get events from this calendar
+                    try:
+                        events_result = service.events().list(
+                            calendarId=calendar_id,
+                            timeMin=datetime.datetime.now().isoformat() + 'Z',
+                            maxResults=1
+                        ).execute()
+                        
+                        events = events_result.get('items', [])
+                        print(f"      Events accessible: {len(events)}")
+                        
+                    except HttpError as e:
+                        print(f"      ❌ Events not accessible: {e}")
+                        
+            else:
+                print("❌ No calendars accessible")
+                print("💡 This suggests:")
+                print("   • Calendars not shared with service account")
+                print("   • Service account doesn't have calendar access")
+                print("   • API permissions issue")
+                
+        except HttpError as e:
+            print(f"❌ Calendar list not accessible: {e}")
+            
+    except Exception as e:
+        print(f"❌ Error: {e}")
+
+def provide_solutions():
+    """Provide solutions based on diagnostic results"""
+    
+    print("\n4️⃣ Solutions")
+    print("=" * 40)
+    
+    print("🔧 If you're still getting 0 calendars, try these solutions:")
+    print()
+    
+    print("1️⃣ Double-check Calendar Sharing:")
+    print("   • Go to: https://calendar.google.com")
+    print("   • Click on your calendar")
+    print("   • Click 'Settings and sharing'")
+    print("   • Make sure the service account email is listed")
+    print("   • Make sure it has 'See all event details' permission")
+    print()
+    
+    print("2️⃣ Try Different Sharing Method:")
+    print("   • Instead of 'Share with specific people'")
+    print("   • Try 'Make available to public' temporarily")
+    print("   • Set to 'See all event details'")
+    print("   • Test if this works")
+    print("   • If it works, the issue is with specific sharing")
+    print()
+    
+    print("3️⃣ Check Service Account Domain:")
+    print("   • Make sure you're using the correct Google account")
+    print("   • The service account should be in the same domain")
+    print("   • Or the calendar should be explicitly shared")
+    print()
+    
+    print("4️⃣ Try Alternative Approach:")
+    print("   • Use OAuth instead of service account")
+    print("   • Run: python calendar_auth_final.py")
+    print("   • This bypasses service account issues")
+    print()
+    
+    print("5️⃣ Check API Enablement:")
+    print("   • Go to: https://console.cloud.google.com/apis/library")
+    print("   • Search for 'Google Calendar API'")
+    print("   • Make sure it's enabled")
+    print("   • Try disabling and re-enabling it")
 
 def main():
     """Main function"""
-    debug_calendar_discovery()
+    
+    print("🔧 Calendar Access Debug")
+    print("=" * 50)
+    
+    # Debug service account
+    if not debug_service_account():
+        return
+    
+    # Debug API access
+    api_success, calendars = debug_api_access()
+    
+    if not api_success:
+        print("\n❌ API access failed - check API enablement")
+        provide_solutions()
+        return
+    
+    # Debug calendar sharing
+    debug_calendar_sharing()
+    
+    # Provide solutions
+    provide_solutions()
 
 if __name__ == '__main__':
     main()
