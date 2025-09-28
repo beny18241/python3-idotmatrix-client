@@ -89,16 +89,18 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs with meeting titles exist, create them if not
-        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
-            print("Creating emoji GIFs with meeting titles...")
-            import create_emoji_gifs_with_meeting_titles
-            create_emoji_gifs_with_meeting_titles.main()
+        # Check if required GIFs exist
+        if not os.path.exists("images/free_emoji.gif"):
+            print("Free emoji GIF not found: images/free_emoji.gif")
+        if not os.path.exists("images/busy_emoji.gif"):
+            print("Busy emoji GIF not found: images/busy_emoji.gif")
+        if not os.path.exists("images/error_emoji.gif"):
+            print("Error emoji GIF not found: images/error_emoji.gif")
         
         if status == "free":
-            # Animated green checkmark with large "FREE" text for free
-            gif_path = "images/free_emoji_with_meeting_title.gif"
-            print(f"Displaying FREE animation with meeting title: {gif_path}")
+            # Free emoji for free status
+            gif_path = "images/free_emoji.gif"
+            print(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -108,9 +110,9 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Animated red X with large "CALL" text for busy
-            gif_path = "images/busy_emoji_with_meeting_title.gif"
-            print(f"Displaying CALL animation with meeting title: {gif_path}")
+            # Busy emoji for busy status
+            gif_path = "images/busy_emoji.gif"
+            print(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -120,9 +122,9 @@ def display_status_on_device(status, events):
             ]
             
         else:
-            # Animated orange warning with large "ERROR" text for error
-            gif_path = "images/error_emoji_with_meeting_title.gif"
-            print(f"Displaying ERROR animation with meeting title: {gif_path}")
+            # Error emoji for error status
+            gif_path = "images/error_emoji.gif"
+            print(f"Displaying ERROR animation: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [

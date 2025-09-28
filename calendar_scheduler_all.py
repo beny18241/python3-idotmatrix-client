@@ -178,14 +178,16 @@ def display_status_on_device(status, events):
         from config import DEVICE_ADDRESS
         
         # Check if required GIFs exist
-        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
-            logger.warning("Free emoji with meeting title GIF not found: images/free_emoji_with_meeting_title.gif")
-        if not os.path.exists("images/busy_emoji_with_text.gif"):
-            logger.warning("Busy emoji with text GIF not found: images/busy_emoji_with_text.gif")
+        if not os.path.exists("images/free_emoji.gif"):
+            logger.warning("Free emoji GIF not found: images/free_emoji.gif")
+        if not os.path.exists("images/busy_emoji.gif"):
+            logger.warning("Busy emoji GIF not found: images/busy_emoji.gif")
+        if not os.path.exists("images/error_emoji.gif"):
+            logger.warning("Error emoji GIF not found: images/error_emoji.gif")
         
         if status == "free":
-            # Free emoji with meeting title for free status
-            gif_path = "images/free_emoji_with_meeting_title.gif"
+            # Free emoji for free status
+            gif_path = "images/free_emoji.gif"
             logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
@@ -196,8 +198,8 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Busy emoji with text for busy status
-            gif_path = "images/busy_emoji_with_text.gif"
+            # Busy emoji for busy status
+            gif_path = "images/busy_emoji.gif"
             logger.info(f"Displaying BUSY animation: {gif_path}")
             
             # Use the run script to display animated GIF
@@ -208,7 +210,7 @@ def display_status_on_device(status, events):
             ]
             
         else:
-            # Default animated orange warning for error
+            # Error emoji for error status
             gif_path = "images/error_emoji.gif"
             logger.info(f"Displaying ERROR animation: {gif_path}")
             
