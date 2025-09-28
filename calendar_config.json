@@ -1,0 +1,16 @@
+{
+  "calendars": {
+    "primary": {
+      "id": "primary",
+      "name": "Primary Calendar",
+      "enabled": true
+    },
+    "imported": {
+      "id": "ee9cpj1n13f24kd8n3m6gtruvivq5jad@import.calendar.google.com",
+      "name": "Imported Calendar",
+      "enabled": true
+    }
+  },
+  "default_calendar": "primary",
+  "timezone": "Europe/Warsaw"
+}
