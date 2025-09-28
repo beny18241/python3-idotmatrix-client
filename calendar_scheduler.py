@@ -38,16 +38,16 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if emoji GIFs exist, create them if not
-        if not os.path.exists("images/free_emoji.gif"):
-            print("Creating emoji GIFs...")
-            import create_emoji_gifs
-            create_emoji_gifs.main()
+        # Check if emoji GIFs with text exist, create them if not
+        if not os.path.exists("images/free_emoji_with_text.gif"):
+            print("Creating emoji GIFs with text overlays...")
+            import create_emoji_gifs_with_text
+            create_emoji_gifs_with_text.main()
         
         if status == "free":
-            # Animated green checkmark for free
-            gif_path = "images/free_emoji.gif"
-            print(f"Displaying FREE animation: {gif_path}")
+            # Animated green checkmark with "FREE" text for free
+            gif_path = "images/free_emoji_with_text.gif"
+            print(f"Displaying FREE animation with text: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -57,9 +57,9 @@ def display_status_on_device(status, events):
             ]
             
         elif status == "busy":
-            # Animated red X for busy
-            gif_path = "images/busy_emoji.gif"
-            print(f"Displaying BUSY animation: {gif_path}")
+            # Animated red X with "CALL" text for busy
+            gif_path = "images/busy_emoji_with_text.gif"
+            print(f"Displaying CALL animation with text: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [
@@ -69,9 +69,9 @@ def display_status_on_device(status, events):
             ]
             
         else:
-            # Animated orange warning for error
-            gif_path = "images/error_emoji.gif"
-            print(f"Displaying ERROR animation: {gif_path}")
+            # Animated orange warning with "ERROR" text for error
+            gif_path = "images/error_emoji_with_text.gif"
+            print(f"Displaying ERROR animation with text: {gif_path}")
             
             # Use the run script to display animated GIF
             cmd = [

@@ -15,7 +15,7 @@ ICS_CALENDAR_URL = "provide your ICS calendar URL here"
 
 # Your iDotMatrix device Bluetooth address
 # Find this by running: ./run_in_venv.sh --scan
-DEVICE_ADDRESS = "Provide your device address here"
+DEVICE_ADDRESS = "DD:4F:93:46:DF:1A"
 
 # =============================================================================
 # DISPLAY SETTINGS
@@ -58,3 +58,23 @@ MAX_EVENTS_DISPLAY = 3
 
 # Event text length limit
 MAX_TEXT_LENGTH = 200
+
+# =============================================================================
+# EMOJI GIF TEXT OVERLAY SETTINGS
+# =============================================================================
+
+# Enable text overlays on emoji GIFs
+ENABLE_TEXT_OVERLAYS = True
+
+# Text overlay settings for different statuses
+FREE_TEXT = "FREE"          # Text for free status
+BUSY_TEXT = "CALL"         # Text for busy status  
+ERROR_TEXT = "ERROR"        # Text for error status
+
+# Text overlay font size (6-12 recommended for 32x32 GIFs)
+TEXT_OVERLAY_FONT_SIZE = 6
+
+# Text overlay colors (RGB format: R-G-B)
+FREE_TEXT_COLOR = "0-255-0"    # Green
+BUSY_TEXT_COLOR = "255-0-0"    # Red
+ERROR_TEXT_COLOR = "255-165-0" # Orange
