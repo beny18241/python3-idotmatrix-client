@@ -177,15 +177,15 @@ def display_status_on_device(status, events):
     try:
         from config import DEVICE_ADDRESS
         
-        # Check if demo GIFs exist
-        if not os.path.exists("images/demo.gif"):
-            logger.warning("Demo GIF not found: images/demo.gif")
+        # Check if required GIFs exist
+        if not os.path.exists("images/free_emoji_with_meeting_title.gif"):
+            logger.warning("Free emoji with meeting title GIF not found: images/free_emoji_with_meeting_title.gif")
         if not os.path.exists("images/demo_64.gif"):
             logger.warning("Demo 64 GIF not found: images/demo_64.gif")
         
         if status == "free":
-            # Demo GIF for free status
-            gif_path = "images/demo.gif"
+            # Free emoji with meeting title for free status
+            gif_path = "images/free_emoji_with_meeting_title.gif"
             logger.info(f"Displaying FREE animation: {gif_path}")
             
             # Use the run script to display animated GIF
