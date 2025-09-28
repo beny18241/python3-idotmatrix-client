@@ -39,18 +39,18 @@ def display_status_on_device(status, events):
         from config import DEVICE_ADDRESS
         
         if status == "free":
-            # Green icon for free
-            display_text = "🟢 FREE"
+            # Green text for free (no emoji)
+            display_text = "FREE"
             text_size = 8  # Smaller text
             text_color = "0-255-0"  # Green
         elif status == "busy":
-            # Meeting icon for busy
-            display_text = f"🔴 {events[:30]}..." if len(events) > 30 else f"🔴 {events}"
+            # Red text for busy (no emoji)
+            display_text = f"BUSY: {events[:30]}..." if len(events) > 30 else f"BUSY: {events}"
             text_size = 6  # Even smaller text for meetings
             text_color = "255-0-0"  # Red
         else:
-            # Error status
-            display_text = "⚠️ ERROR"
+            # Error status (no emoji)
+            display_text = "ERROR"
             text_size = 8
             text_color = "255-255-0"  # Yellow
         

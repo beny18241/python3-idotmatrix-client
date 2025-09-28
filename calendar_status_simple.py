@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Calendar Status Display
+Simple Calendar Status Display
 
-Enhanced display with icons and status indicators for iDotMatrix.
+Uses simple text patterns instead of emoji for better iDotMatrix compatibility.
 """
 
 import sys
@@ -10,7 +10,7 @@ import subprocess
 from datetime import datetime
 
 def get_meeting_status():
-    """Get current meeting status with enhanced formatting"""
+    """Get current meeting status"""
     
     try:
         from config import ICS_CALENDAR_URL, DEVICE_ADDRESS
@@ -28,41 +28,35 @@ def get_meeting_status():
         print(f"❌ Error getting status: {e}")
         return "error", "Error"
 
-def format_meeting_text(events, max_length=25):
-    """Format meeting text for display"""
+def format_simple_display(status, events):
+    """Format display text for iDotMatrix"""
     
-    if len(events) > max_length:
-        # Truncate and add ellipsis
-        return events[:max_length-3] + "..."
-    return events
+    if status == "free":
+        return "FREE", 8, "0-255-0"  # Green text, larger size
+        
+    elif status == "busy":
+        # Truncate meeting title
+        meeting_title = events[:20] if len(events) > 20 else events
+        return f"BUSY: {meeting_title}", 6, "255-0-0"  # Red text, smaller size
+        
+    else:
+        return "ERROR", 8, "255-255-0"  # Yellow text
 
-def display_status_with_icons(status, events):
-    """Display status with appropriate icons and formatting"""
+def display_simple_status():
+    """Display simple status on iDotMatrix"""
     
     try:
         from config import DEVICE_ADDRESS
         
-        if status == "free":
-            # Green text for free (no emoji)
-            display_text = "FREE"
-            text_size = 8
-            text_color = "0-255-0"  # Green
-            text_speed = 30  # Slower for free status
-            
-        elif status == "busy":
-            # Red text with meeting title (no emoji)
-            meeting_title = format_meeting_text(events)
-            display_text = f"BUSY: {meeting_title}"
-            text_size = 6  # Smaller for meeting titles
-            text_color = "255-0-0"  # Red
-            text_speed = 20  # Faster for meeting info
-            
-        else:
-            # Yellow warning for error (no emoji)
-            display_text = "ERROR"
-            text_size = 8
-            text_color = "255-255-0"  # Yellow
-            text_speed = 30
+        # Get status
+        status, events = get_meeting_status()
+        
+        # Format display
+        display_text, text_size, text_color = format_simple_display(status, events)
+        
+        print(f"📊 Status: {status}")
+        print(f"📝 Display: {display_text}")
+        print(f"📏 Size: {text_size}, Color: {text_color}")
         
         # Build command
         cmd = [
@@ -70,12 +64,10 @@ def display_status_with_icons(status, events):
             "--address", DEVICE_ADDRESS,
             "--set-text", display_text,
             "--text-size", str(text_size),
-            "--text-color", text_color,
-            "--text-speed", str(text_speed)
+            "--text-color", text_color
         ]
         
-        print(f"🚀 Displaying: {display_text}")
-        print(f"📏 Size: {text_size}, Color: {text_color}, Speed: {text_speed}")
+        print(f"🚀 Command: {' '.join(cmd)}")
         
         # Execute command
         result = subprocess.run(cmd, capture_output=True, text=True)
@@ -91,10 +83,10 @@ def display_status_with_icons(status, events):
         print(f"❌ Error displaying status: {e}")
         return False
 
-def show_status_summary():
-    """Show current status summary"""
+def show_status_info():
+    """Show status information"""
     
-    print("📊 Calendar Status Summary")
+    print("📊 Simple Calendar Status")
     print("=" * 40)
     
     status, events = get_meeting_status()
@@ -105,11 +97,14 @@ def show_status_summary():
     
     if status == "free":
         print("🟢 You are FREE - Available for meetings")
+        print("📝 Display: FREE (Green text)")
     elif status == "busy":
         print("🔴 You are BUSY - In a meeting")
         print(f"📝 Meeting: {events}")
+        print("📝 Display: BUSY: [meeting title] (Red text)")
     else:
         print("⚠️ ERROR - Cannot determine status")
+        print("📝 Display: ERROR (Yellow text)")
     
     return status, events
 
@@ -117,7 +112,7 @@ def main():
     """Main function"""
     
     if len(sys.argv) < 2:
-        print("Usage: python3 calendar_status_display.py <command>")
+        print("Usage: python3 calendar_status_simple.py <command>")
         print("  Commands:")
         print("    status    - Show current status")
         print("    display   - Display status on device")
@@ -127,17 +122,16 @@ def main():
     command = sys.argv[1]
     
     if command == "status":
-        show_status_summary()
+        show_status_info()
         
     elif command == "display":
-        status, events = get_meeting_status()
-        display_status_with_icons(status, events)
+        display_simple_status()
         
     elif command == "update":
         print("🔄 Updating calendar status...")
-        status, events = show_status_summary()
+        status, events = show_status_info()
         print()
-        display_status_with_icons(status, events)
+        display_simple_status()
         
     else:
         print(f"❌ Unknown command: {command}")

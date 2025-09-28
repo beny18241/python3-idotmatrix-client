@@ -76,31 +76,34 @@ python3 calendar_status_display.py display
 
 # Update and display
 python3 calendar_status_display.py update
+
+# Simple display (no emoji, better compatibility)
+python3 calendar_status_simple.py status
+python3 calendar_status_simple.py display
+python3 calendar_status_simple.py update
 ```
 
 ### **Status Indicators**
-- **🟢 FREE** - Available for meetings (Green, size 8)
-- **🔴 MEETING** - In a meeting (Red, size 6, shows meeting title)
-- **⚠️ ERROR** - Connection issue (Yellow, size 8)
+- **FREE** - Available for meetings (Green text, size 8)
+- **BUSY: [meeting title]** - In a meeting (Red text, size 6, shows meeting title)
+- **ERROR** - Connection issue (Yellow text, size 8)
 
 ## 🎯 **Display Features**
 
 ### **When FREE:**
-- 🟢 Green circle icon
 - "FREE" text
 - Larger text (size 8)
 - Green color
 - Slower animation
 
 ### **When BUSY:**
-- 🔴 Red circle icon
+- "BUSY: [meeting title]" text
 - Meeting title (truncated if long)
 - Smaller text (size 6)
 - Red color
 - Faster animation
 
 ### **When ERROR:**
-- ⚠️ Warning icon
 - "ERROR" text
 - Medium text (size 8)
 - Yellow color
