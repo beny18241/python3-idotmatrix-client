@@ -58,6 +58,59 @@ def create_free_dot_gif():
                             if 0 <= x < size and 0 <= y < size:
                                 draw.point((x, y), fill=(255, 255, 255))
         
+        # Add "FREE" text at bottom
+        if progress > 0.5:
+            text_progress = min(1.0, (progress - 0.5) / 0.5)
+            if text_progress > 0.3:
+                # Draw "FREE" in small pixels at bottom
+                text_y = 28
+                # F
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + 2 + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + 4 + y), fill=(0, 255, 0))
+                
+                # R
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((6 + x, text_y + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((6 + x, text_y + 2 + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((8 + x, text_y + 2 + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((8 + x, text_y + 4 + y), fill=(0, 255, 0))
+                
+                # E
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + 2 + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + 4 + y), fill=(0, 255, 0))
+                
+                # E
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((14 + x, text_y + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((14 + x, text_y + 2 + y), fill=(0, 255, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((14 + x, text_y + 4 + y), fill=(0, 255, 0))
+        
         frames.append(img)
     
     gif_path = "images/demo.gif"
@@ -113,6 +166,68 @@ def create_busy_dot_gif():
                         y2 = center_y - 5 + i + thickness
                         if 0 <= x2 < size and 0 <= y2 < size:
                             draw.point((x2, y2), fill=(255, 255, 255))
+        
+        # Add "BUSY" text at bottom
+        if progress > 0.5:
+            text_progress = min(1.0, (progress - 0.5) / 0.5)
+            if text_progress > 0.3:
+                # Draw "BUSY" in small pixels at bottom
+                text_y = 28
+                # B
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + 2 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((2 + x, text_y + 4 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((4 + x, text_y + 2 + y), fill=(255, 0, 0))
+                
+                # U
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((6 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((8 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((6 + x, text_y + 4 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((8 + x, text_y + 4 + y), fill=(255, 0, 0))
+                
+                # S
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + 2 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((10 + x, text_y + 4 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((12 + x, text_y + 2 + y), fill=(255, 0, 0))
+                
+                # Y
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((14 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((16 + x, text_y + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((15 + x, text_y + 2 + y), fill=(255, 0, 0))
+                for y in range(2):
+                    for x in range(2):
+                        draw.point((15 + x, text_y + 4 + y), fill=(255, 0, 0))
         
         frames.append(img)
     
