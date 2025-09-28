@@ -160,7 +160,7 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
         
         elif meeting_type == "current":
             # Get current events - check for events happening now
-            now = datetime.datetime.now()
+            now = datetime.datetime.utcnow()
             now_utc = now.isoformat() + 'Z'
             
             # Check a wider time range to catch ongoing events
