@@ -207,22 +207,8 @@ def get_oauth_calendar_events(meeting_type="tomorrow"):
                             if is_current:
                                 return f"{event_summary} @ {time_str}"
                         
-                        # If no current event found, check for the next upcoming event
-                        event = events[0]
-                        event_summary = event.get('summary', 'No Title')
-                        start_time = event.get('start', {})
-                        
-                        time_str = ""
-                        if 'dateTime' in start_time:
-                            try:
-                                dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
-                                time_str = dt.strftime('%H:%M')
-                            except:
-                                time_str = "Now"
-                        elif 'date' in start_time:
-                            time_str = "Now"
-                        
-                        return f"{event_summary} @ {time_str}"
+                        # If no current event found, return Free
+                        return "Free"
                 
                 except Exception as e:
                     print(f"❌ Error accessing calendar: {e}")

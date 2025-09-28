@@ -86,31 +86,8 @@ def get_current_meeting_service():
                 except:
                     pass
         
-        # If no current event found, return the next upcoming event
-        event = events[0]
-        summary = event.get('summary', 'No Title')
-        start_time = event.get('start', {})
-        location = event.get('location', '')
-        
-        # Format time
-        time_str = ""
-        if 'dateTime' in start_time:
-            try:
-                dt = datetime.datetime.fromisoformat(start_time['dateTime'].replace('Z', '+00:00'))
-                time_str = dt.strftime('%H:%M')
-            except:
-                time_str = "Now"
-        elif 'date' in start_time:
-            time_str = "All day"
-        
-        # Create display text
-        display_text = f"{summary}"
-        if time_str:
-            display_text += f" @ {time_str}"
-        if location:
-            display_text += f" ({location})"
-        
-        return display_text
+        # If no current event found, return None (Free)
+        return None
         
     except Exception as e:
         print(f"❌ Failed to get current meeting: {e}")
