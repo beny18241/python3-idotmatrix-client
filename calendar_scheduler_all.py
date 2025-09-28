@@ -172,52 +172,52 @@ def get_all_calendar_status():
     return final_status, final_events
 
 def display_status_on_device(status, events):
-    """Display status on iDotMatrix device with improved formatting"""
+    """Display status on iDotMatrix device with animated emoji GIFs"""
     
     try:
         from config import DEVICE_ADDRESS
         
+        # Check if emoji GIFs exist, create them if not
+        if not os.path.exists("images/free_emoji.gif"):
+            logger.info("Creating emoji GIFs...")
+            import create_emoji_gifs
+            create_emoji_gifs.main()
+        
         if status == "free":
-            # Green text for free - compact format
-            display_text = "🟢 FREE"
-            text_size = 12
-            text_color = "0-255-0"  # Bright Green
+            # Animated green checkmark for free
+            gif_path = "images/free_emoji.gif"
+            logger.info(f"Displaying FREE animation: {gif_path}")
+            
+            # Use the run script to display animated GIF
+            cmd = [
+                "./run_in_venv.sh",
+                "--address", DEVICE_ADDRESS,
+                "--set-gif", gif_path
+            ]
+            
         elif status == "busy":
-            # Red text for busy - show meeting details in compact format
-            # Clean up the events text
-            clean_events = events.replace("ICS:", "").replace("Google:", "").replace("Service:", "").strip()
-            if "No events found" in clean_events:
-                display_text = "🔴 BUSY"
-            else:
-                # More aggressive truncation but keep key info
-                if len(clean_events) > 25:
-                    # Try to keep the most important part (meeting name)
-                    meeting_parts = clean_events.split(' @ ')
-                    if len(meeting_parts) > 0:
-                        meeting_name = meeting_parts[0][:20]  # First 20 chars of meeting name
-                        display_text = f"🔴 {meeting_name}"
-                    else:
-                        display_text = f"🔴 {clean_events[:25]}"
-                else:
-                    display_text = f"🔴 {clean_events}"
-            text_size = 10
-            text_color = "255-0-0"  # Bright Red
+            # Animated red X for busy
+            gif_path = "images/busy_emoji.gif"
+            logger.info(f"Displaying BUSY animation: {gif_path}")
+            
+            # Use the run script to display animated GIF
+            cmd = [
+                "./run_in_venv.sh",
+                "--address", DEVICE_ADDRESS,
+                "--set-gif", gif_path
+            ]
+            
         else:
-            # Error status - compact
-            display_text = "⚠️ ERROR"
-            text_size = 12
-            text_color = "255-165-0"  # Orange
-        
-        logger.info(f"Displaying on device: {display_text} (size: {text_size}, color: {text_color})")
-        
-        # Use the run script to display text
-        cmd = [
-            "./run_in_venv.sh",
-            "--address", DEVICE_ADDRESS,
-            "--set-text", display_text,
-            "--text-size", str(text_size),
-            "--text-color", text_color
-        ]
+            # Animated orange warning for error
+            gif_path = "images/error_emoji.gif"
+            logger.info(f"Displaying ERROR animation: {gif_path}")
+            
+            # Use the run script to display animated GIF
+            cmd = [
+                "./run_in_venv.sh",
+                "--address", DEVICE_ADDRESS,
+                "--set-gif", gif_path
+            ]
         
         logger.info(f"Running command: {' '.join(cmd)}")
         print(f"🚀 Running: {' '.join(cmd)}")
@@ -225,8 +225,8 @@ def display_status_on_device(status, events):
         result = subprocess.run(cmd, capture_output=True, text=True)
         
         if result.returncode == 0:
-            logger.info(f"Status displayed successfully: {display_text}")
-            print(f"✅ Status displayed: {display_text}")
+            logger.info(f"Status displayed successfully with animation")
+            print(f"✅ Status displayed with animated emoji")
             return True
         else:
             logger.error(f"Failed to display on device: {result.stderr}")
