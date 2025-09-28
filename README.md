@@ -47,6 +47,19 @@ source venv/bin/activate && python3 copy_oauth_from_local.py
 ./run_oauth_calendar_venv.sh XX:XX:XX:XX:XX:XX today
 ```
 
+### Automatic Scheduler (NEW)
+```bash
+# Test scheduler once
+python3 calendar_scheduler.py test
+
+# Run scheduler continuously (every 30 minutes)
+python3 calendar_scheduler.py
+
+# Simple status display
+python3 calendar_status_simple.py status
+python3 calendar_status_simple.py display
+```
+
 ### ICS Calendar Only (No Authentication Required)
 ```bash
 # Works without Google authentication
@@ -124,6 +137,49 @@ python3 test_ics_simple.py
 source venv/bin/activate && python3 fix_oauth_now.py
 ```
 
+## 🕐 **Automatic Calendar Scheduler**
+
+### **Schedule Updates Every 30 Minutes**
+```bash
+# Test the scheduler once
+python3 calendar_scheduler.py test
+
+# Run scheduler continuously
+python3 calendar_scheduler.py
+
+# Simple status display (no emoji)
+python3 calendar_status_simple.py status
+python3 calendar_status_simple.py display
+```
+
+### **Status Display Features**
+- **FREE** - Green text when available (size 8)
+- **BUSY: [meeting title]** - Red text when in meeting (size 6)
+- **ERROR** - Yellow text for connection issues (size 8)
+
+### **Server Deployment (Systemd)**
+```bash
+# Setup systemd service
+sudo cp calendar-scheduler.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable calendar-scheduler
+sudo systemctl start calendar-scheduler
+
+# Check status
+sudo systemctl status calendar-scheduler
+
+# View logs
+sudo journalctl -u calendar-scheduler -f
+```
+
+### **Alternative: Cron Job**
+```bash
+# Add to crontab (every 30 minutes)
+crontab -e
+# Add this line:
+*/30 * * * * cd /opt/idotmatrix && python3 calendar_scheduler.py test
+```
+
 ## 📁 Calendar Integration Files
 
 ### Main Calendar Scripts
@@ -141,6 +197,13 @@ source venv/bin/activate && python3 fix_oauth_now.py
 ### Testing Tools
 - `test_ics_simple.py` - ICS calendar tester
 - `oauth_ssh_tunnel_alt.py` - SSH tunnel for OAuth
+
+### Scheduler & Status Display
+- `calendar_scheduler.py` - Automatic updates every 30 minutes
+- `calendar_status_display.py` - Enhanced status display with icons
+- `calendar_status_simple.py` - Simple text-only status display
+- `calendar-scheduler.service` - Systemd service for server deployment
+- `setup_scheduler.sh` - Easy scheduler setup script
 
 ---
 
