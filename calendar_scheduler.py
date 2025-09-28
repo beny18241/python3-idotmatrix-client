@@ -13,23 +13,75 @@ import os
 from datetime import datetime
 
 def get_current_status():
-    """Get current calendar status using Google Calendar OAuth"""
+    """Get current calendar status from both ICS and Google Calendar"""
     
+    print("🔍 Checking all calendar sources...")
+    
+    # Try ICS Calendar first
+    ics_status = None
+    ics_events = None
     try:
-        from config import DEVICE_ADDRESS
+        from config import ICS_CALENDAR_URL
+        from ics_calendar_simple import get_ics_events_for_current_simple
+        
+        print("📅 Checking ICS Calendar...")
+        current_events = get_ics_events_for_current_simple(ICS_CALENDAR_URL)
+        
+        if current_events and current_events != "Free":
+            ics_status = "busy"
+            ics_events = current_events
+            print(f"✅ ICS Calendar: BUSY - {current_events}")
+        else:
+            ics_status = "free"
+            ics_events = "Free"
+            print("✅ ICS Calendar: FREE")
+            
+    except Exception as e:
+        print(f"❌ ICS Calendar error: {e}")
+        ics_status = "error"
+        ics_events = "ICS Error"
+    
+    # Try Google Calendar OAuth
+    google_status = None
+    google_events = None
+    try:
         from calendar_display_oauth import get_calendar_info_oauth
         
-        # Get current events from Google Calendar OAuth
+        print("📅 Checking Google Calendar OAuth...")
         current_events = get_calendar_info_oauth("current")
         
         if current_events and current_events != "Free":
-            return "busy", current_events
+            google_status = "busy"
+            google_events = current_events
+            print(f"✅ Google Calendar: BUSY - {current_events}")
         else:
-            return "free", "Free"
+            google_status = "free"
+            google_events = "Free"
+            print("✅ Google Calendar: FREE")
             
     except Exception as e:
-        print(f"❌ Error getting status: {e}")
-        return "error", "Error"
+        print(f"❌ Google Calendar OAuth error: {e}")
+        google_status = "error"
+        google_events = "Google OAuth Error"
+    
+    # Combine results - if any calendar shows busy, we're busy
+    if ics_status == "busy" or google_status == "busy":
+        # Prefer the one that's not an error
+        if ics_status == "busy":
+            return "busy", f"ICS: {ics_events}"
+        elif google_status == "busy":
+            return "busy", f"Google: {google_events}"
+    
+    # Check for errors
+    if ics_status == "error" and google_status == "error":
+        return "error", "Both calendars failed"
+    elif ics_status == "error":
+        return "error", f"ICS failed, Google: {google_events}"
+    elif google_status == "error":
+        return "error", f"Google failed, ICS: {ics_events}"
+    
+    # Both show free
+    return "free", "Free"
 
 def display_status_on_device(status, events):
     """Display status on iDotMatrix device with animated emoji GIFs"""
